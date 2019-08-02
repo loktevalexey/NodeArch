@@ -31,6 +31,7 @@ webserver.get('/service1', (req, res) => {
 webserver.get('/service2', (req, res) => { 
     // при обращении по этому УРЛу - ответ зависит от GET-параметров
     logLineSync('_server.log',"service2 called, get pars: "+JSON.stringify(req.query));
+    res.setHeader("X-XSS-Protection", "0"); // добавляем в ответ заголовок, иначе неинтересно
     res.send("service2 ok, par1="+req.query.par1+" par2="+req.query.par2);
 });
 
