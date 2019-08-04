@@ -10,16 +10,16 @@ webserver.use(express.urlencoded({extended:true}));
 const port = 3535;
 const logFN = path.join(__dirname, '_server.log');
 
-webserver.get('/service1', (req, res) => { 
-    logLineSync(logFN,"service1 called, get pars: "+JSON.stringify(req.query));
+webserver.get('/service3', (req, res) => { 
+    logLineSync(logFN,"service3 called, get pars: "+JSON.stringify(req.query));
     res.setHeader("Content-Type", "text/plain");
-    res.send("service1 par1="+req.query.par1+" par2="+req.query.par2);
+    res.send("service3 par1="+req.query.par1+" par2="+req.query.par2);
 });
 
-webserver.get('/service2', (req, res) => { 
-    logLineSync(logFN,"service2 called, get pars: "+JSON.stringify(req.query));
+webserver.get('/service4', (req, res) => { 
+    logLineSync(logFN,"service4 called, get pars: "+JSON.stringify(req.query));
     res.setHeader("Content-Type", "image/jpeg");
-    res.send("service1 par1="+req.query.par1+" par2="+req.query.par2);
+    res.send("service4 par1="+req.query.par1+" par2="+req.query.par2);
 });
 
 webserver.listen(port);
