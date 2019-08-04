@@ -36,7 +36,12 @@ webserver.get('/service2', (req, res) => {
     let par1=parseInt(req.query.par1)||0;
     let par2=escapeHTML(req.query.par2);
 
-    res.send("service2 ok, par1="+par1+" par2="+par2);
+    if ( par1<=0 || par1>=10 ) {
+        res.status(400).end();
+    }
+    else {
+        res.send("service2 ok, par1="+par1+" par2="+par2);
+    }
 });
 
 webserver.listen(port);
