@@ -27,9 +27,6 @@ webserver.options('/service1', (req, res) => {
 webserver.post('/service1', (req, res) => { 
     logLineSync(logFN,"service1 called");
 
-    res.setHeader("Access-Control-Allow-Origin","*");
-    res.setHeader("Access-Control-Allow-Headers","Content-Type");
-
     console.log("request headers",req.headers);
     const contentType=req.headers['content-type'];
 
@@ -46,6 +43,8 @@ webserver.post('/service1', (req, res) => {
         console.log(req.body); // тело запроса осталось неизменённым, как прислал клиент
     }
 
+    res.setHeader("Access-Control-Allow-Origin","*");
+    res.setHeader("Access-Control-Allow-Headers","Content-Type");
     res.send("");
 });
 

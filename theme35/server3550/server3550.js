@@ -21,6 +21,7 @@ webserver.get('/service1', (req, res) => {
 
     console.log("request params",req.query);
 
+    res.setHeader("Access-Control-Allow-Origin","*"); // нужно, т.к. мы к этому сервису и через AJAX будем обращаться
     res.send("ok login="+req.query.login);
 });
 
@@ -31,6 +32,7 @@ webserver.post('/service2', (req, res) => {
 
     console.log("request post data",req.body);
 
+    res.setHeader("Access-Control-Allow-Origin","*"); // нужно, т.к. мы к этому сервису и через AJAX будем обращаться
     res.send("ok login="+req.body.login);
 });
 

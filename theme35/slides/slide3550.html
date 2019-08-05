@@ -31,3 +31,58 @@
     <input type=file name='photo'><br>
     <input type=submit value="отправить данные формы методом POST в формате multipart/form-data">
 </form>
+<br>
+
+<hr>
+
+<br><br>
+<input type=button onclick="call_service1()" value='отправить данные формы методом GET в формате application/x-www-form-urlencoded'>
+
+<br><br>
+<input type=button onclick="call_service2_urlencoded()" value='отправить данные формы методом POST в формате multipart/form-data'>
+
+<br><br>
+<input type=file id='photo2'><br>
+<input type=button onclick="call_service4_multipart()" value='отправить данные формы методом POST в формате multipart/form-data'>
+
+<script>
+
+    async function call_service1() {
+        // предположим что LLL и ppp прочитаны из полей формы
+        const response=await fetch('http://localhost:3550/service1?login='+encodeURIComponent("LLL")+"&password="+encodeURIComponent("ppp"));
+        const data=await response.text();
+        console.log(data);
+    }
+
+    async function call_service2_urlencoded() {
+        // предположим что LLL и ppp прочитаны из полей формы
+        const fetchOptions={
+            method: "post",
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'login='+encodeURIComponent("LLL")+"&password="+encodeURIComponent("ppp"),
+        };
+        const response=await fetch('http://localhost:3550/service2',fetchOptions);
+        const data=await response.text();
+        console.log(data);
+    }
+
+    async function call_service4_multipart() {
+        // предположим что LLL и ppp прочитаны из полей формы
+
+        let formData=new FormData();
+        formData.append("login","LLL");
+        formData.append("password","ppp")
+        formData.append("photo",document.getElementById("photo2").files[0]);
+
+        const fetchOptions={
+            method: "post",
+            body: formData,
+        };
+        const response=await fetch('http://localhost:3550/service4',fetchOptions);
+        const data=await response.text();
+        console.log(data);
+    }
+        
+</script>
