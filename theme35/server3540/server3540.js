@@ -13,7 +13,7 @@ webserver.use(anyBodyParser);  // это самописная мидлварь, 
 const port = 3540;
 const logFN = path.join(__dirname, '_server.log');
 
-// т.к. к /service1 будет обращение через AJAX и методом POST, то браузер будет делать предварительный (preflight) запрос методом OPTIONS
+// т.к. к /service1 будет обращение со страниц с другим origin через AJAX методом POST, то браузер будет делать предварительный (preflight) запрос методом OPTIONS
 // в заголовках ответа надо и разрешить обращаться со страниц с любым origin, и разрешить те заголовки запроса которые мы готовы обрабатывать
 webserver.options('/service1', (req, res) => { 
     logLineSync(logFN,"service1 preflight called");
@@ -21,7 +21,7 @@ webserver.options('/service1', (req, res) => {
     res.setHeader("Access-Control-Allow-Origin","*");
     res.setHeader("Access-Control-Allow-Headers","Content-Type");
 
-    res.send(""); // сам ответ может быть пустым
+    res.send(""); // сам ответ на preflight-запрос может быть пустым
 });
 
 webserver.post('/service1', (req, res) => { 

@@ -1,0 +1,33 @@
+
+<br>
+<form action="http://localhost:3550/service1" method=get target=example>
+    Логин: <input type=text name='login'><br>
+    Пароль: <input type=password name='password'><br>
+    <input type=hidden name='internalnum' value=555>
+    <input type=submit value="отправить данные формы методом GET в формате application/x-www-form-urlencoded">
+</form>
+
+<br>
+<form action="http://localhost:3550/service2" method=post target=example>
+    Логин: <input type=text name='login'><br>
+    Пароль: <input type=password name='password'><br>
+    <input type=hidden name='internalnum' value=555>
+    <input type=submit value="отправить данные формы методом POST в формате application/x-www-form-urlencoded">
+</form>
+
+<br>
+<form action="http://localhost:3550/service3" method=post enctype='multipart/form-data' target=example>
+    Логин: <input type=text name='login'><br>
+    Пароль: <input type=password name='password'><br>
+    <input type=hidden name='internalnum' value=555>
+    <input type=submit value="отправить данные формы методом POST в формате multipart/form-data">
+</form>
+
+<br>
+<form action="http://localhost:3550/service4" method=post enctype='multipart/form-data' target=example>
+    Логин: <input type=text name='login'><br>
+    Пароль: <input type=password name='password'><br>
+    <input type=hidden name='internalnum' value=555>
+    <input type=file name='photo'><br>
+    <input type=submit value="отправить данные формы методом POST в формате multipart/form-data">
+</form>

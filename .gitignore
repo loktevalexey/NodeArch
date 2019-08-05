@@ -4,3 +4,4 @@
 .vscode/
 *.code-workspace
 **/_server.log
+**/uploads
