@@ -8,3 +8,4 @@ require("../theme35/server3535/server3535");
 require("../theme35/server3538/server3538");
 require("../theme35/server3540/server3540");
 require("../theme35/server3550/server3550");
+require("../theme35/server3560/server3560");
