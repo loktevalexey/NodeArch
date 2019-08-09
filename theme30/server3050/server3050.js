@@ -16,6 +16,12 @@ webserver.get('/service2', (req, res) => {
     res.send("service2 ok, par1="+req.query.par1+" par2="+req.query.par2);
 });
 
+webserver.get('/service2b/:par1/:par2', (req, res) => { 
+    // при обращении по этому УРЛу - ответ зависит от частей URI запроса
+    console.log('service2b called, req.params=',req.params);
+    res.send("service2b ok, par1="+req.params.par1+" par2="+req.params.par2);
+});
+
 webserver.get('/service3', (req, res) => { 
     // при обращении по этому УРЛу - ответ всегда ошибка 401
     console.log('service3 called');

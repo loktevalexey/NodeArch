@@ -35,8 +35,8 @@ var CORSOptions = {
     origin: '*', // разрешаем обращаться с любого origin
     optionsSuccessStatus: 200, // на OPTIONS отсылать код ответа 200
 };
-webserver.options('/service3', cors(CORSOptions));
-webserver.post('/service3', cors(CORSOptions), (req, res) => {  // включаем мидлварь cors в цепочку мидлварей конкретного запроса
+webserver.options('/service3', cors(CORSOptions));  // включаем мидлварь cors в цепочку мидлварей, причём ответ не нужно прописывать - мидлварь его сама отправит
+webserver.post('/service3', cors(CORSOptions), (req, res) => {  // включаем мидлварь cors в цепочку мидлварей
     logLineSync(logFN,"service3 called");
 
     res.send("service3 ok");
