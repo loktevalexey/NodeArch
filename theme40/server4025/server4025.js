@@ -6,7 +6,7 @@ const { logLineSync } = require('../../utils/utils');
 
 const webserver = express();
 
-const port = 4022;
+const port = 4025;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get("/mysite/*", (req, res) => { 
@@ -18,6 +18,10 @@ webserver.get("/mysite/*", (req, res) => {
         const stats=fs.statSync(filePath);
         if ( stats.isFile() ) {
             console.log("отдаём файл",filePath);
+
+            if ( /\.html$/.test(filePath) )
+                res.setHeader("Content-Type", "text/html");
+
             const fileStream=fs.createReadStream(filePath);
             fileStream.pipe(res);
         }   

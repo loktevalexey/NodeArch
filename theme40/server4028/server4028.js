@@ -6,18 +6,28 @@ const { logLineSync } = require('../../utils/utils');
 
 const webserver = express();
 
-const port = 4022;
+const port = 4028;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get("/mysite/*", (req, res) => { 
     logLineSync(logFN,"static server called, originalUrl="+req.originalUrl);
 
-    const filePath=path.resolve(__dirname,"../site_football",req.originalUrl.substring(8));
+    const fileName=req.originalUrl.substring(8);
+    const filePath=path.resolve(__dirname,"../site_football",fileName);
 
     try {
         const stats=fs.statSync(filePath);
         if ( stats.isFile() ) {
             console.log("отдаём файл",filePath);
+
+            if ( /\.html$/.test(filePath) )
+                res.setHeader("Content-Type", "text/html");
+
+            let fileModDT=new Date(stats.birthtimeMs);
+            res.setHeader("Last-Modified", fileModDT.toUTCString());
+
+            res.setHeader("ETag","$$$"+fileName+"$$$");
+
             const fileStream=fs.createReadStream(filePath);
             fileStream.pipe(res);
         }   

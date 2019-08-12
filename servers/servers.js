@@ -13,3 +13,5 @@ require("../theme35/server3570/server3570");
 require("../theme35/server3585/server3585");
 
 require("../theme40/server4022/server4022");
+require("../theme40/server4025/server4025");
+require("../theme40/server4028/server4028");
