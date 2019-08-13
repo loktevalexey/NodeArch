@@ -18,18 +18,39 @@ webserver.get("/mysite/*", (req, res) => {
     try {
         const stats=fs.statSync(filePath);
         if ( stats.isFile() ) {
-            console.log("отдаём файл",filePath);
-
-            if ( /\.html$/.test(filePath) )
-                res.setHeader("Content-Type", "text/html");
 
             let fileModDT=new Date(stats.birthtimeMs);
-            res.setHeader("Last-Modified", fileModDT.toUTCString());
+            let lastModifiedStr=fileModDT.toUTCString();
 
-            res.setHeader("ETag","$$$"+fileName+"$$$");
+            let ETag="$$$"+fileName+"$$$"; // чисто для демонстрации; ETag следует считать как CRC от содержимого файла
 
-            const fileStream=fs.createReadStream(filePath);
-            fileStream.pipe(res);
+            let ifNoneMatch=req.header("If-None-Match");
+            let ifModifiedSince=req.header("If-Modified-Since");
+            if ( ifNoneMatch && (ifNoneMatch===ETag) ) {
+                console.log("отдаём 304 т.к. If-None-Match совпал с ETag");
+                res.status(304).send(""); // в кэше браузера - годная версия, пусть её использует
+            }
+            else if ( ifModifiedSince && (ifModifiedSince===lastModifiedStr) ) {
+                console.log("отдаём 304 т.к. If-Modified-Since совпал с датой изменения файла");
+                res.status(304).send(""); // в кэше браузера - годная версия, пусть её использует
+            }
+            else {
+                if ( /\.html$/.test(filePath) )
+                    res.setHeader("Content-Type", "text/html");
+                else if ( /\.jpg$/.test(filePath) )
+                    res.setHeader("Content-Type", "image/jpeg");
+                else if ( /\.css$/.test(filePath) )
+                    res.setHeader("Content-Type", "text/css");
+            
+                res.setHeader("Last-Modified",lastModifiedStr);
+                res.setHeader("ETag",ETag);
+                res.setHeader("Expires","0"); // невалидная дата - ресурс в кэш сохраняется сразу как прокисший
+                res.setHeader("Cache-Control","no-cache"); // всегда отправлять на сервер запрос на ревалидацию прокисшего закэшированного ресурса
+                
+                console.log("отдаём файл",filePath);
+                const fileStream=fs.createReadStream(filePath);
+                fileStream.pipe(res);
+            }
         }   
         else {
             console.log("запрошена папка",filePath);
