@@ -5,7 +5,7 @@ const { logLineSync } = require('../../utils/utils');
 
 const webserver = express();
 
-const port = 4035;
+const port = 4040;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.use(function (req, res, next) {
@@ -14,12 +14,19 @@ webserver.use(function (req, res, next) {
 });
 
 webserver.use(function(req, res, next) {
-    if ( /\.html$/.test(req.path) ) {
-      //res.charset = "windows-1251"; это не работает!
-      res.setHeader("Content-Type","text/html; charset=windows-1251");
-    }
-    next(); // это миддлварь - продолжаем обработку запроса
-  });
+    if ( req.path==="/mysite/file1.jpg" ) {
+        logLineSync(logFN,"sending file...");
+        res.setHeader("Content-Disposition","attachment");
+        res.download(path.resolve(__dirname,"../site_football/football.jpg"));
+    } 
+    else if ( req.path==="/mysite/file2.jpg" ) {
+        logLineSync(logFN,"sending file...");
+        res.setHeader("Content-Disposition","attachment");
+        res.download(path.resolve(__dirname,"../site_football/football.jpg"),"download_file2.jpg");
+    } 
+    else
+        next();
+});
   
 webserver.use(
     "/mysite",
