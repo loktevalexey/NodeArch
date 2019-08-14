@@ -2,7 +2,8 @@ const fs = require('fs');
 const os = require('os');
 
 // пишет строку в файл лога и одновременно в консоль
-// origin - программа или модуль, который выводит строку
+
+// синхронная версия
 function logLineSync(logFilePath,logLine) {
     const logDT=new Date();
     let time=logDT.toLocaleDateString()+" "+logDT.toLocaleTimeString();
@@ -15,6 +16,40 @@ function logLineSync(logFilePath,logLine) {
     fs.closeSync(logFd);
 }
 
+// асинхронная версия
+function logLineAsync(logFilePath,logLine) {
+
+    return new Promise( (resolve,reject) => {
+
+        const logDT=new Date();
+        let time=logDT.toLocaleDateString()+" "+logDT.toLocaleTimeString();
+        let fullLogLine=time+" "+logLine;
+    
+        console.log(fullLogLine); // выводим сообщение в консоль
+    
+        fs.open(logFilePath, 'a+', (err,logFd) => {
+            if ( err ) 
+                reject(err);
+            else    
+                fs.write(logFd, fullLogLine + os.EOL, (err) => {
+                    if ( err )
+                        reject(err); 
+                    else    
+                        fs.close(logFd, (err) =>{
+                            if ( err )
+                                reject(err);
+                            else    
+                                resolve();
+                        });
+                });
+    
+        });
+            
+    } );
+
+}
+
 module.exports={
     logLineSync,
+    logLineAsync,
 };
