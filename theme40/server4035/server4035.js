@@ -15,6 +15,7 @@ webserver.use(function (req, res, next) {
 
 webserver.use(function(req, res, next) {
     if ( /\.html$/.test(req.path) ) {
+      //res.charset = "windows-1251"; это не работает!
       res.setHeader("Content-Type","text/html; charset=windows-1251");
     }
     next();
