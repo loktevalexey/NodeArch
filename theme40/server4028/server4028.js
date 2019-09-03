@@ -44,11 +44,11 @@ webserver.get("/mysite/*", (req, res) => {
             
                 res.setHeader("Last-Modified",lastModifiedStr);
                 res.setHeader("ETag",ETag);
-                res.setHeader("Cache-Control","public"); // ответ может быть сохранён любым кэшем, в т.ч. кэшем браузера
-                res.setHeader("Expires", new Date(Date.now() + 60*1000).toUTCString()); // ответ будет сохранён в кэш на 1 минуту
-                // или так:
+                res.setHeader("Cache-Control","public, max-age=60"); // ответ может быть сохранён любым кэшем, в т.ч. кэшем браузера, на 1 минуту
+                //res.setHeader("Expires", new Date(Date.now() + 60*1000).toUTCString()); // (устаревший подход) ответ будет сохранён в кэш на 1 минуту
+                // или если кэширование не требуется:
                 // res.setHeader("Cache-Control","no-cache"); // всегда отправлять на сервер запрос на ревалидацию прокисшего закэшированного ответа
-                // res.setHeader("Expires","0"); // невалидная дата - ответ в кэш браузера будет сохранён сразу как прокисший
+                // res.setHeader("Expires","0"); // (устаревший подход) невалидная дата - ответ в кэш браузера будет сохранён сразу как прокисший
                 
                 console.log("отдаём файл",filePath);
                 const fileStream=fs.createReadStream(filePath);
