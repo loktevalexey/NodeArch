@@ -14,7 +14,7 @@ webserver.use(function (req, res, next) {
 });
 
 webserver.use(
-    express.static(path.resolve(__dirname,"../site_sport"))
+    express.static(path.resolve(__dirname,"static"))
 );
 
 webserver.listen(port);

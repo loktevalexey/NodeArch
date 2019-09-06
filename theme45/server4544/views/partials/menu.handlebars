@@ -1,0 +1,14 @@
+<div class='Menu'>
+    <p style="font-size: large; font-weight: bold; padding-left: 20px">Виды спорта:</p>
+    <ol style="list-style-type: square">
+        {{#each menu}}
+            <li>
+            {{#if this.isCurrentPage}}
+                {{this.text}}
+            {{else}}  
+                <a href="{{this.ref}}">{{this.text}}</a>
+            {{/if}}
+            </li>
+        {{/each}}
+    </ol>
+</div>
