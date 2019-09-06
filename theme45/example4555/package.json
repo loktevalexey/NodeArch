@@ -1,0 +1,16 @@
+{
+  "name": "nodearch",
+  "version": "0.0.1",
+  "description": "ES6 modules example",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "Loktev Alexey",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "ignore-styles": "^5.0.1"
+  }
+}
