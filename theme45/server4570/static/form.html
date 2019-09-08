@@ -1,0 +1,72 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+  <form name='anketa' method=post action='/send' novalidate>
+    Введите фамилию: <input type=text name='fam'><br />
+    Введите имя: <input type=text name='im'><br />
+    Введите отчество: <input type=text name='otch'><br />
+    Выберите пол:<br />
+    <select name='gender'>
+        <option></option>
+        <option value="M">мужской</option>
+        <option value="F">женский</option>
+    </select><br />
+    <input type='submit' value='готово'>
+</form>
+
+<script type="module">
+
+    console.log("HELLO");
+
+    import { getAnketaValidationErrors } from "/shared/anketavalidation.js";
+
+    var formTag=document.forms.anketa;
+    formTag.addEventListener('submit',validateAnketa,false); // назначаем обработчик события submit
+
+    function validateAnketa(EO) {
+        EO=EO||window.event;
+        try {
+            var formTag=document.forms.anketa;
+
+            var anketa={
+                fam: formTag.elements.fam.value,
+                im: formTag.elements.im.value,
+                otch: formTag.elements.otch.value,
+                gender: formTag.elements.gender.value,
+            };
+
+            let errors=getAnketaValidationErrors(anketa);
+            
+            if ( errors.length ) {
+
+                // в alert отобразим ВСЕ ошибки
+                alert( "ФОРМА ЗАПОЛНЕНА НЕВЕРНО:\n"+errors.map( error => error.errortext ).join("\n") );
+
+                // курсор поставим в первое ошибочное поле (считаем что ошибки прилетели в порядке следования полей)
+                let firstFocusFieldName=errors[0].focusfldname;
+                if ( firstFocusFieldName ) { // мало ли - вернулась ошибка без фокусируемог поля
+                    let firstFocusField=formTag.elements[firstFocusFieldName];
+                    firstFocusField.focus();
+                }
+
+                EO.preventDefault(); // форма не будет отправлена на сервер
+                return;
+
+            }
+
+            // валидация успешная - форма будет отправлена на сервер
+        }
+        catch ( ex ) {
+            EO.preventDefault(); // что-то пошло не так - считаем что валидация не прошла
+        }
+    }
+
+</script>
+</body>
+
+</html>

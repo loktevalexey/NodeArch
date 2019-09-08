@@ -28,3 +28,12 @@ require("../theme45/server4530/server4530");
 require("../theme45/server4542/server4542");
 require("../theme45/server4544/server4544");
 require("../theme45/server4560/server4560");
+//require("../theme45/server4570/server4570");
+
+require('ignore-styles') // игнорировать CSS-файлы, если где-то будут импортироваться
+require('@babel/register')({ 
+  ignore: [ /(node_modules)/ ], 
+  only: [ /server4570/ ], // в этом примере используются ES6-модули
+  presets: [ ['@babel/preset-env', { "targets": { "node": "10.12" } } ] ] 
+}) 
+require('../theme45/server4570/server4570') // этот require бабель перекрыл (благодаря @babel/register) и уже транспилирует код перед тем как Node.js его выполнит
