@@ -1,4 +1,4 @@
-require('ignore-styles') // игнорировать CSS-файлы, если где-то будут импортироваться
+require('ignore-styles'); // игнорировать CSS-файлы, если где-то будут импортироваться
 require('@babel/register')({ 
   ignore: [/(node_modules)/], 
   presets: [
@@ -11,6 +11,6 @@ require('@babel/register')({
       }    
     ]
   ] 
-}) 
+});
 
-require('./main') // этот require бабель перекрыл (благодаря @babel/register) и уже транспилирует код перед тем как Node.js его выполнит
+require('./main'); // этот require бабель перекрыл (благодаря @babel/register) и уже транспилирует код перед тем как Node.js его выполнит
