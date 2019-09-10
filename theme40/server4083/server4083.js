@@ -12,8 +12,7 @@ const logFN = path.join(__dirname, '_server.log');
 webserver.get('/getdataasync', (req, res) => { 
     logLineAsync(logFN,"getdataasync called");
 
-    var readStream=fs.createReadStream( path.resolve(__dirname,"../site_football/stats.json") );
-    readStream.pipe(res);
+    res.sendFile( path.resolve(__dirname,"../site_football/stats.json") );
 });
 
 webserver.listen(port);

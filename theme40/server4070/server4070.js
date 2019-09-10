@@ -51,8 +51,7 @@ webserver.post("/remember", (req, res) => {
 
 function sendPage(res,filePath) {
     logLineAsync(logFN,"отдаём файл "+filePath);
-    const fileStream=fs.createReadStream(filePath);
-    fileStream.pipe(res);
+    res.sendFile(filePath);
 }
 
 webserver.listen(port);

@@ -53,6 +53,8 @@ webserver.get("/mysite/*", (req, res) => {
                 console.log("отдаём файл",filePath);
                 const fileStream=fs.createReadStream(filePath);
                 fileStream.pipe(res);
+
+                // можно также использовать res.sendFile, он позволяет всё это указать удобнее
             }
         }   
         else {
