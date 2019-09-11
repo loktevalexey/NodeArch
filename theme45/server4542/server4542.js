@@ -6,9 +6,9 @@ const { logLineAsync } = require('../../utils/utils');
 
 const webserver = express();
 
-webserver.engine('handlebars', exphbs());
-webserver.set('view engine', 'handlebars');
-webserver.set('views', path.join(__dirname, 'views'));
+webserver.engine('handlebars', exphbs()); // регистрируем движок шаблонов handlebars в списке движков шаблонов express
+webserver.set('view engine', 'handlebars'); // устанавливаем, что будет использоваться именно движок шаблонов handlebars
+webserver.set('views', path.join(__dirname, 'views')); // задаём папку, в которой будут шаблоны
 
 const port = 4542;
 const logFN = path.join(__dirname, '_server.log');
