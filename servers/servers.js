@@ -28,7 +28,9 @@ require("../theme45/server4530/server4530");
 require("../theme45/server4542/server4542");
 require("../theme45/server4544/server4544");
 require("../theme45/server4560/server4560");
-//require("../theme45/server4570/server4570");
+
+require("../theme55/server5632/server5632");
+require("../theme55/server5633/server5633");
 
 require('ignore-styles'); // игнорировать CSS-файлы, если где-то будут импортироваться
 require('@babel/register')({ 
