@@ -1,0 +1,115 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+    <table><tr>
+        <td style='padding-right: 30px' valign=top>
+
+            <h2>READ всего списка</h2>
+            <input type=button onclick='readAllTest()' value='получить'>
+            <div id='IReadAllResult'></div>
+
+        </td>
+        <td valign=top>
+
+                <h2>READ одной группы</h2>
+                Название: <input type=text id=IReadOneName>
+                <input type=button onclick='readOneTest()' value='получить'>
+                <div id='IReadOneResult'></div>
+
+                <h2 style='padding-top: 30px'>CREATE группы</h2>
+                Название: <input type=text id=ICreateName>
+                Дата старта: <input type=date id=ICreateLessonsStartDat>
+                <input type=button onclick='createTest()' value='создать'>
+                <div id='ICreateResult'></div>
+
+        </td>
+    </tr></table>
+
+    <script>
+
+        async function readAllTest() {
+            const fetchOptions={
+                headers: {
+                    'Accept': 'application/json', // в ответ ожидаем данные в формате JSON
+                },
+            };
+            const response=await fetch('http://localhost:6082/groups',fetchOptions);
+            const data=await response.json();
+
+            let res='';
+            res+='<table border=1>';
+            data.forEach( row => {
+                let lessons_start_dat=row.lessons_start_dat ? new Date(row.lessons_start_dat*1000) : null;
+                res+='<tr>';
+                res+=`<td>${row.id}</td>`;
+                res+=`<td>${row.name}</td>`;
+                res+=`<td>${lessons_start_dat}</td>`;
+                res+='</tr>';
+            } );    
+            res+='</table>';
+
+            document.getElementById('IReadAllResult').innerHTML=res;
+        }
+
+        async function readOneTest() {
+            const groupName=document.getElementById('IReadOneName').value;
+            const fetchOptions={
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                    'Accept': 'application/json', // в ответ ожидаем данные в формате JSON
+                },
+            };
+            const response=await fetch('http://localhost:6082/group/'+encodeURIComponent(groupName),fetchOptions);
+            const data=await response.json();
+
+            let res='';
+            res+='<table border=1>';
+            data.forEach( row => {
+                let lessons_start_dat=row.lessons_start_dat ? new Date(row.lessons_start_dat*1000) : null;
+                res+='<tr>';
+                res+=`<td>${row.id}</td>`;
+                res+=`<td>${row.name}</td>`;
+                res+=`<td>${lessons_start_dat}</td>`;
+                res+='</tr>';
+            } );    
+            res+='</table>';
+
+            document.getElementById('IReadOneResult').innerHTML=res;
+        }
+
+        async function createTest() {
+            const groupName=document.getElementById('ICreateName').value;
+            const groupLessonsStartDatStr=document.getElementById('ICreateLessonsStartDat').value; 
+            let groupLessonsStartDat=null;
+            if ( groupLessonsStartDatStr ) { // в формате "YYYY-MM-DD"
+                let groupLessonsStartDatParts=groupLessonsStartDatStr.split("-").map(v=>Number(v));
+                groupLessonsStartDat=(new Date(groupLessonsStartDatParts[0],groupLessonsStartDatParts[1]-1,groupLessonsStartDatParts[2]));
+            }
+
+            const data={ name:groupName, lessons_start_dat:groupLessonsStartDat?groupLessonsStartDat/1000:null };
+            const fetchOptions={
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                    'Accept': 'text/plain', // в ответ будем ожидать просто id созданной группы
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response=await fetch('http://localhost:6082/groups',fetchOptions);
+            const newGroupId=await response.text();
+            
+            document.getElementById('ICreateResult').innerHTML="добавлена группа с id="+newGroupId;
+
+        }
+
+    </script>
+
+</body>
+
+</html>
