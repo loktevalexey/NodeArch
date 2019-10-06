@@ -27,6 +27,18 @@
                 <input type=button onclick='createTest()' value='создать'>
                 <div id='ICreateResult'></div>
 
+                <h2 style='padding-top: 30px'>UPDATE группы</h2>
+                Id: <input type=number id=IUpdateId>
+                Новое название: <input type=text id=IUpdateName>
+                Новая дата старта: <input type=date id=IUpdateLessonsStartDat>
+                <input type=button onclick='updateTest()' value='изменить'>
+                <div id='IUpdateResult'></div>
+
+                <h2 style='padding-top: 30px'>DELETE группы</h2>
+                Id: <input type=number id=IDeleteId>
+                <input type=button onclick='deleteTest()' value='удалить'>
+                <div id='IDeleteResult'></div>
+
         </td>
     </tr></table>
 
@@ -106,6 +118,47 @@
             
             document.getElementById('ICreateResult').innerHTML="добавлена группа с id="+newGroupId;
 
+        }
+
+        async function updateTest() {
+            const groupId=document.getElementById('IUpdateId').value;
+            const groupName=document.getElementById('IUpdateName').value;
+            const groupLessonsStartDatStr=document.getElementById('IUpdateLessonsStartDat').value; 
+            let groupLessonsStartDat=null;
+            if ( groupLessonsStartDatStr ) {
+                let groupLessonsStartDatParts=groupLessonsStartDatStr.split("-").map(v=>Number(v));
+                groupLessonsStartDat=(new Date(groupLessonsStartDatParts[0],groupLessonsStartDatParts[1]-1,groupLessonsStartDatParts[2]));
+            }
+
+            const data={ id:groupId, name:groupName, lessons_start_dat:groupLessonsStartDat?groupLessonsStartDat/1000:null };
+            const fetchOptions={
+                method: "put",
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response=await fetch('http://localhost:6082/groups',fetchOptions);
+            
+            document.getElementById('IUpdateResult').innerHTML="изменена группа с id="+groupId;
+        }
+
+        async function deleteTest() {
+            const groupId=document.getElementById('IDeleteId').value;
+
+            const data={ id:groupId };
+            const fetchOptions={
+                method: "delete",
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response=await fetch('http://localhost:6082/groups',fetchOptions);
+            
+            document.getElementById('IDeleteResult').innerHTML="удалена группа с id="+groupId;
         }
 
     </script>

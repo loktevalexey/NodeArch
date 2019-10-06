@@ -100,6 +100,7 @@ webserver.post('/groups', (req, res) => {
     console.log('post (create) called');
 
     // забираем данные из тела запроса, заодно избавляемся от соглашений по датам
+    // этот кусочек кода заодно неплохо документирует, что мы ожидаем в теле запроса
     const name=req.body.name;
     const lessons_start_dat=req.body.lessons_start_dat ? new Date(req.body.lessons_start_dat*1000) : null;
     // id не передаётся - мы же добавляем НОВУЮ группу, id будет назначен MySQL-сервером!
@@ -110,6 +111,7 @@ webserver.post('/groups', (req, res) => {
         if ( name.length>100 ) {
             throw new Error("POST /groups - слишком длинное название группы - "+name);
         }
+        // if ( ... ) другие проверки, любые ошибки словит catch
     }
     catch ( error ) {
         reportRequestError(error,res);
@@ -126,12 +128,11 @@ webserver.post('/groups', (req, res) => {
                 values (?,?)
             ;`, [name,lessons_start_dat],
             (error, results, fields) => {
-                console.log("!!!",error);
                 if (error) {
                     reportServerError(error,res);
                 }
                 else {
-                    
+
                     // надо узнать идентификатор, присвоенный добавленной группе
                     // его можно узнать запросом select last_insert_id()
                     connection.query(`select last_insert_id() as id;`, (error, results, fields) => {
@@ -156,6 +157,89 @@ webserver.post('/groups', (req, res) => {
                 connection.end();    
         }
     }
+});
+
+// UPDATE
+webserver.put('/groups', (req, res) => { 
+    console.log('put (update) called');
+    // от PUT ожидается, что если такой строки нет - она будет добавлена, а если есть - она будет обновлена
+    // но, в общем, нам решать; мы будем делать именно обновление строки
+
+    const id=req.body.id;
+    const name=req.body.name;
+    const lessons_start_dat=req.body.lessons_start_dat ? new Date(req.body.lessons_start_dat*1000) : null;
+
+    let validationOk=true;
+    try {
+        if ( name.length>100 ) {
+            throw new Error("PUT /groups - слишком длинное название группы - "+name);
+        }
+    }
+    catch ( error ) {
+        reportRequestError(error,res);
+        validationOk=false;
+    }
+
+    if ( validationOk ) {
+        let connection=null;
+        try {
+            connection = mysql.createConnection(connectionConfig);
+            connection.connect();
+            connection.query(`
+                update grups set name=?, lessons_start_dat=?
+                where id=?
+            ;`, [name,lessons_start_dat,id],
+            (error, results, fields) => {
+                if (error) {
+                    reportServerError(error,res);
+                }
+                else {
+                    // можно здесь запросом select row_count() получить количество изменённых строк, по идее должно быть ровно 1
+                    // если их 0 - возможно был передан id несуществующей группы, но возможно мы обновили все поля группы на те же значения что были раньше
+                    res.send("");
+                    connection.end();
+                    console.log('group updated, id='+id);
+                }
+            });
+        }
+        catch ( error ) {
+            reportServerError(error,res);
+            if ( connection )
+                connection.end();    
+        }
+    }
+});
+
+// DELETE
+webserver.delete('/groups', (req, res) => { 
+    console.log('delete (delete) called');
+
+    const id=req.body.id;
+
+    let connection=null;
+    try {
+        connection = mysql.createConnection(connectionConfig);
+        connection.connect();
+        connection.query(`delete from grups where id=?;`, [id],
+        (error, results, fields) => {
+            if (error) {
+                reportServerError(error,res);
+            }
+            else {
+                // можно здесь запросом select row_count() получить количество изменённых (т.е. удалённых) строк, должно быть ровно 1
+                // если их 0 - видимо был передан id несуществующей группы
+                res.send("");
+                connection.end();
+                console.log('group deleted, id='+id);
+            }
+        });
+    }
+    catch ( error ) {
+        reportServerError(error,res);
+        if ( connection )
+            connection.end();    
+    }
+    
 });
 
 webserver.use(
