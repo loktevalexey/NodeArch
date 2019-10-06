@@ -33,10 +33,11 @@ require("../theme55/server5632/server5632");
 require("../theme55/server5633/server5633");
 
 require("../theme60/server6082/server6082");
+require("../theme60/server6086/server6086");
 
 require('ignore-styles'); // игнорировать CSS-файлы, если где-то будут импортироваться
 require('@babel/register')({ 
-  ignore: [ /(node_modules)/ ], 
+  ignore: [ /(node_modules)/ ], // не транспилировать всё что в node_modules (как правило там всё уже оттранспилированное)
   only: [ /server4570/ ], // в этом примере используются ES6-модули
   presets: [ ['@babel/preset-env', { "targets": { "node": "10.12" } } ] ] 
 });
