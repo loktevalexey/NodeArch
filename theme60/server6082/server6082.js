@@ -165,6 +165,9 @@ webserver.put('/groups', (req, res) => {
     // от PUT ожидается, что если такой строки нет - она будет добавлена, а если есть - она будет обновлена
     // но, в общем, нам решать; мы будем делать именно обновление строки
 
+    // можно было передавать id не в теле запроса а в УРЛе:
+    // webserver.put('/groups/:groupid' ...
+
     const id=req.body.id;
     const name=req.body.name;
     const lessons_start_dat=req.body.lessons_start_dat ? new Date(req.body.lessons_start_dat*1000) : null;
@@ -213,6 +216,9 @@ webserver.put('/groups', (req, res) => {
 // DELETE
 webserver.delete('/groups', (req, res) => { 
     console.log('delete (delete) called');
+
+    // можно было передавать id не в теле запроса а в УРЛе:
+    // webserver.delete('/groups/:groupid' ...
 
     const id=req.body.id;
 

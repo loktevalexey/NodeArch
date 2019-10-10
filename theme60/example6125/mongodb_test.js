@@ -1,6 +1,9 @@
 var mongoose=require('mongoose');
 
-mongoose.connect('mongodb://localhost/learning',{useNewUrlParser:true,useUnifiedTopology:true}); // последняя часть УРЛа - имя базы, она создастся сама если её пока нет
+mongoose.connect('mongodb://localhost/learning',{useNewUrlParser:true,useUnifiedTopology:true}); 
+// последняя часть УРЛа - имя базы, она создастся сама если её ещё нет
+// если к базе организован парольный доступ - здесь же будут прописаны имя пользователя и пароль
+
 var db=mongoose.connection;
 db.on('error',()=>{console.error('connection error:');});
 db.once('open', function() {
