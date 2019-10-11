@@ -19,7 +19,7 @@ webserver.use(function(req, res, next) {
       res.setHeader("Content-Type","text/html; charset=windows-1251");
     }
     next(); // это миддлварь - продолжаем обработку запроса
-  });
+});
   
 webserver.use(
     "/mysite",
