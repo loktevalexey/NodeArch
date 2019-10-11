@@ -6,15 +6,8 @@ const mysql=require("mysql");
 const { logLineAsync } = require('../../utils/utils');
 const { newConnectionFactory, selectQueryFactory, modifyQueryFactory, getLastInsertedId, getModifiedRowsCount } = require("./db_utils");
 
-const connectionConfig={
-    host     : 'localhost',  // на каком компьютере расположена база данных
-    user     : 'nodeuser',   // каким пользователем подключаемся (на учебном сервере - "root")
-    password : 'nodepass',   // каким паролем подключаемся (на учебном сервере - "1234")
-    database : 'nodearch_db' // к какой базе данных подключаемся
-};
-
 const poolConfig={
-    connectionLimit : 2,     // полагаем что БД выдержит 10 соединений, т.е. в пуле будет максимум 10 соединений
+    connectionLimit : 2,      // полагаем что БД выдержит 10 соединений, т.е. в пуле будет максимум 2 соединения
     host     : 'localhost',   // на каком компьютере расположена база данных
     user     : 'nodeuser',    // каким пользователем подключаемся (на учебном сервере - "root")
     password : 'nodepass',    // каким паролем подключаемся (на учебном сервере - "1234")
