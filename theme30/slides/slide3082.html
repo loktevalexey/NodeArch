@@ -1,0 +1,16 @@
+
+<br>
+<a href='http://localhost:3082/service1?par1=z&par2=sss%3Cscript%3Ealert("hacked!")%3C%2Fscript%3E' target=example>
+    GET-сервис /service1 очень легкомысленный
+</a>
+
+<br>
+
+<br>
+<a href='http://localhost:3082/service2?par1=5&par2=sss%3Cscript%3Ealert("hacked!")%3C%2Fscript%3E' target=example>
+    GET-сервис /service2 осторожен с XSS
+</a>
+<br>
+<a href='http://localhost:3082/service2?par1=z&par2=sss' target=example>
+    GET-сервис /service2 также валидирует входные параметры
+</a>

@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "description": "Node.js web projects architecture",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "server3085:dev":  "cross-env NODE_ENV=development VAR1=aaa node theme30/server3085/server3085.js",
+    "server3085:prod": "cross-env NODE_ENV=production  VAR1=bbb node theme30/server3085/server3085.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/loktevalexey/NodeArch.git"
@@ -18,6 +21,7 @@
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
+    "cross-env": "^6.0.3",
     "express": "^4.16.4",
     "express-handlebars": "^3.1.0",
     "ignore-styles": "^5.0.1",

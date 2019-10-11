@@ -7,7 +7,7 @@ const webserver = express();
 
 webserver.use(express.urlencoded({extended:true}));
 
-const port = 3080;
+const port = 3082;
 const logFN = path.join(__dirname, '_server.log');
 
 // пишет строку в файл лога и одновременно в консоль
