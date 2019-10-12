@@ -8,13 +8,6 @@ const webserver = express();
 const port = 4037;
 const logFN = path.join(__dirname, '_server.log');
 
-webserver.use(function(req, res, next) {
-  if ( /\.html$/.test(req.path) ) {
-    res.setHeader("Content-Type","text/html; charset=windows-1251");
-  }
-  next();
-});
-
 webserver.use(
     "/mysite",
     express.static(path.resolve(__dirname,"../site_football"))
