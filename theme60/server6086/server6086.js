@@ -25,12 +25,12 @@ const logFN = path.join(__dirname, '_server.log');
 webserver.use(bodyParser.json());       // данные запросов будут в JSON-формате
 
 function reportServerError(error,res) {
-    res.status(500).send(""); // в прод-режиме нельзя отсылать на клиент подробности ошибки!
+    res.status(500).end();
     logLineAsync(logFN,error);
 }
 
 function reportRequestError(error,res) {
-    res.status(400).send("");
+    res.status(400).end();
     logLineAsync(logFN,error);
 }
 
@@ -199,7 +199,7 @@ webserver.delete('/groups', async (req, res) => {
             console.log('group deleted, id='+id);
         }
         else {
-            res.status(400).send("");
+            res.status(400).end();
             console.log('group not found, id='+id);
         }
     }

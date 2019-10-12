@@ -11,7 +11,6 @@ const port = 3082;
 const logFN = path.join(__dirname, '_server.log');
 
 // пишет строку в файл лога и одновременно в консоль
-// origin - программа или модуль, который выводит строку
 function logLineSync(logFilePath,logLine) {
     const logDT=new Date();
     let time=logDT.toLocaleDateString()+" "+logDT.toLocaleTimeString();

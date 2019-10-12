@@ -5,7 +5,7 @@ const { logLineAsync } = require('../../utils/utils');
 
 const webserver = express();
 
-const port = 4050;
+const port = 4060;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.use(function (req, res, next) {

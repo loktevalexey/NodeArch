@@ -10,17 +10,15 @@ webserver.use(express.urlencoded({extended:true}));
 const port = 3085;
 const logFN = path.join(__dirname, '_server.log');
 
-// пишет строку в файл лога и одновременно в консоль
-// origin - программа или модуль, который выводит строку
 function logLineSync(logFilePath,logLine) {
     const logDT=new Date();
     let time=logDT.toLocaleDateString()+" "+logDT.toLocaleTimeString();
     let fullLogLine=time+" "+logLine;
 
-    console.log(fullLogLine); // выводим сообщение в консоль
+    console.log(fullLogLine);
 
-    const logFd = fs.openSync(logFilePath, 'a+'); // и это же сообщение добавляем в лог-файл
-    fs.writeSync(logFd, fullLogLine + os.EOL); // os.EOL - это символ конца строки, он разный для разных ОС
+    const logFd = fs.openSync(logFilePath, 'a+');
+    fs.writeSync(logFd, fullLogLine + os.EOL);
     fs.closeSync(logFd);
 }
 
@@ -31,7 +29,11 @@ webserver.get('/service2', (req, res) => {
     let par2=escapeHTML(req.query.par2);
 
     if ( par1<=0 || par1>=10 ) {
-        res.status(400).end();
+        res.status(400);
+        if ( process.env.NODE_ENV==="development" )
+            res.send("par1 must be between 0 and 10");
+        else
+            res.end();
     }
     else {
         res.send("service2 ok, par1="+par1+" par2="+par2);

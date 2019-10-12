@@ -28,11 +28,11 @@ webserver.get("/mysite/*", (req, res) => {
             let ifModifiedSince=req.header("If-Modified-Since");
             if ( ifNoneMatch && (ifNoneMatch===ETag) ) {
                 console.log("отдаём 304 т.к. If-None-Match совпал с ETag");
-                res.status(304).send(""); // в кэше браузера - годная версия, пусть её использует
+                res.status(304).end(); // в кэше браузера - годная версия, пусть её использует
             }
             else if ( ifModifiedSince && (ifModifiedSince===lastModifiedStr) ) {
                 console.log("отдаём 304 т.к. If-Modified-Since совпал с датой изменения файла");
-                res.status(304).send(""); // в кэше браузера - годная версия, пусть её использует
+                res.status(304).end(); // в кэше браузера - годная версия, пусть её использует
             }
             else {
                 if ( /\.html$/.test(filePath) )
@@ -59,12 +59,12 @@ webserver.get("/mysite/*", (req, res) => {
         }   
         else {
             console.log("запрошена папка",filePath);
-            res.status(403).send(""); // это папка, вернём 403 - запрещено
+            res.status(403).end(); // это папка, вернём 403 - запрещено
         }
     }
     catch ( err ) {
         console.log("ошибка проверки файла",filePath,err.code);
-        res.status(404).send(""); // будем думать что может быть только одна ошибка - файл не найден
+        res.status(404).end(); // будем думать что может быть только одна ошибка - файл не найден
     }
 
 });
