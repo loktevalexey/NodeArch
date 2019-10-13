@@ -39,7 +39,7 @@
 <input type=button onclick="call_service1()" value='отправить данные формы методом GET в формате application/x-www-form-urlencoded'>
 
 <br><br>
-<input type=button onclick="call_service2_urlencoded()" value='отправить данные формы методом POST в формате multipart/form-data'>
+<input type=button onclick="call_service2_urlencoded()" value='отправить данные формы методом POST в формате application/x-www-form-urlencoded'>
 
 <br><br>
 <input type=file id='photo2'><br>
@@ -49,19 +49,31 @@
 
     async function call_service1() {
         // предположим что LLL и ppp прочитаны из полей формы
-        const response=await fetch('http://localhost:3550/service1?login='+encodeURIComponent("LLL")+"&password="+encodeURIComponent("ppp"));
+
+        let sp = new URLSearchParams();
+        sp.append('login', "LLL");
+        sp.append('password', 'ppp'); 
+        const response=await fetch('http://localhost:3550/service1?'+sp);
+
+        // или можно const response=await fetch('http://localhost:3550/service1?login='+encodeURIComponent("LLL")+"&password="+encodeURIComponent("ppp"));
         const data=await response.text();
         console.log(data);
     }
 
     async function call_service2_urlencoded() {
         // предположим что LLL и ppp прочитаны из полей формы
+
+        let sp = new URLSearchParams();
+        sp.append('login', "LLL");
+        sp.append('password', 'ppp'); 
+
         const fetchOptions={
             method: "post",
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: 'login='+encodeURIComponent("LLL")+"&password="+encodeURIComponent("ppp"),
+            body: sp,
+            // или можно body: 'login='+encodeURIComponent("LLL")+"&password="+encodeURIComponent("ppp"),
         };
         const response=await fetch('http://localhost:3550/service2',fetchOptions);
         const data=await response.text();
