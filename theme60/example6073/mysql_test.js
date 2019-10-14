@@ -4,7 +4,7 @@ const connectionConfig={
   host     : 'localhost',  // на каком компьютере расположена база данных
   user     : 'nodeuser',   // каким пользователем подключаемся (на учебном сервере - "root")
   password : 'nodepass',   // каким паролем подключаемся (на учебном сервере - "1234")
-  database : 'nodearch_db' // к какой базе данных подключаемся
+  database : 'learning_db' // к какой базе данных подключаемся
 };
 
 var connection = mysql.createConnection(connectionConfig);
