@@ -1,6 +1,6 @@
 -- MySQL dump 10.16  Distrib 10.1.37-MariaDB, for Win32 (AMD64)
 --
--- Host: localhost    Database: nodearch_db
+-- Host: localhost    Database: learning_db
 -- ------------------------------------------------------
 -- Server version	10.1.37-MariaDB
 
@@ -221,4 +221,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-06 23:53:50
+-- Dump completed on 2019-10-14 22:31:34
