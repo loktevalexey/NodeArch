@@ -1,5 +1,11 @@
 const { logLine } = require('./utils');
 const { selectQueryFactory } = require("./utils_db");
+
+// приходится экспортировать это тут, заранее, т.к. blocks.js импортирует composeContent из этого модуля!
+module.exports={
+    composeContent,
+};
+
 const { 
     composeBlock_Header,composeBlock_FormattedText,
     composeBlock_Search,
@@ -48,6 +54,9 @@ async function composeContent(contentId,coreData,appData) {
             case 'CONTACTS':
                 blockHTML=await composeBlock_Contacts(coreData,appData,blockAttributes);
                 break;
+            case 'HEADER':
+                blockHTML=await composeBlock_Header(coreData,appData,blockAttributes);
+                break;
             case 'URL_NEW_HEADER':
                 blockHTML=await composeBlock_URLNew_Header(coreData,appData,blockAttributes);
                 break;
@@ -63,7 +72,3 @@ async function composeContent(contentId,coreData,appData) {
 
     return contentHTML;
 }
-
-module.exports={
-    composeContent,
-};

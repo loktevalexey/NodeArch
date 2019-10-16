@@ -2,7 +2,7 @@ const { selectQueryRowFactory } = require("./utils_db");
 const { composeContent } = require("./contents");
 
 async function composeBlock_Header(coreData,appData,blockAttributes) {
-    return ``;
+    return `<h2>${blockAttributes.text}</h2>`;
 }
 
 async function composeBlock_FormattedText(coreData,appData,blockAttributes) {
@@ -45,8 +45,8 @@ async function composeBlock_URLNew_Header(coreData,appData,blockAttributes) {
 }
 
 async function composeBlock_URLNew_Text(coreData,appData,blockAttributes) {
-    //return composeContent(appData.newInfo.content,coreData,appData);
-    return appData.newInfo.content;
+    return composeContent(appData.newInfo.content,coreData,appData);
+    //return appData.newInfo.content;
 }
 
 module.exports={

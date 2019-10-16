@@ -112,7 +112,7 @@ CREATE TABLE `contents_blocks` (
 
 LOCK TABLES `contents_blocks` WRITE;
 /*!40000 ALTER TABLE `contents_blocks` DISABLE KEYS */;
-INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,NULL);
+INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,'{\"text\":\"Всем привет!\"}');
 /*!40000 ALTER TABLE `contents_blocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-16 16:57:48
+-- Dump completed on 2019-10-16 17:54:08
