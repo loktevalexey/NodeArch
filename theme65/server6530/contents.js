@@ -1,6 +1,14 @@
 const { logLine } = require('./utils');
 const { selectQueryFactory } = require("./utils_db");
-const { composeBlock_Search } = require("./blocks");
+const { 
+    composeBlock_Header,composeBlock_FormattedText,
+    composeBlock_Search,
+    composeBlock_Image,
+    composeBlock_WeatherForecast,
+    composeBlock_Banner,
+    composeBlock_Contacts,
+    composeBlock_URLNew_Header,composeBlock_URLNew_Text,
+} = require("./blocks");
 
 async function composeContent(contentId,coreData,appData) {
 
@@ -8,7 +16,7 @@ async function composeContent(contentId,coreData,appData) {
     let contentBlocks=await selectQueryFactory(coreData.connection, `
         select cb.id, cb.block_type, bt.code block_type_code, cb.block_attributes
         from contents_blocks cb, block_types bt
-        where cb.content=?
+        where cb.content=? and cb.block_type=bt.id
         order by cb.content_ord
     ;`, [contentId]);
 
@@ -23,8 +31,8 @@ async function composeContent(contentId,coreData,appData) {
                 blockAttributes=JSON.parse(contentBlock.block_attributes);
             }
             catch ( err ) {
-                // исключения не должны ломать макет! максимум - надо просто пропустить кривой блок, мы же попробуем продолжить без атрибутов
-                logLine(logFN,`cannot parse block id=${contentBlock.id} attributes`);
+                // исключения не должны ломать страницу! максимум - надо просто пропустить кривой блок, мы же попробуем продолжить без атрибутов
+                logLine(coreData.logFN,`cannot parse block id=${contentBlock.id} attributes`);
             }
         }
 
@@ -32,8 +40,22 @@ async function composeContent(contentId,coreData,appData) {
 
         switch ( contentBlock.block_type_code ) {
             case 'SEARCH':
-                blockHTML=await composeBlock_Search(coreData,appData);
+                blockHTML=await composeBlock_Search(coreData,appData,blockAttributes);
                 break;
+            case 'BANNER':
+                blockHTML=await composeBlock_Banner(coreData,appData,blockAttributes);
+                break;
+            case 'CONTACTS':
+                blockHTML=await composeBlock_Contacts(coreData,appData,blockAttributes);
+                break;
+            case 'URL_NEW_HEADER':
+                blockHTML=await composeBlock_URLNew_Header(coreData,appData,blockAttributes);
+                break;
+            case 'URL_NEW_TEXT':
+                blockHTML=await composeBlock_URLNew_Text(coreData,appData,blockAttributes);
+                break;                        
+            default:
+                logLine(coreData.logFN,`cannot compose block id=${contentBlock.id} - type code ${contentBlock.block_type_code} unknown`);
         }
 
         contentHTML+=blockHTML;

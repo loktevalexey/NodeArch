@@ -40,7 +40,7 @@ webserver.get('/new/:urlcode', async (req, res) => {
             res.status(404).send("Извините, такой новости у нас нет!");
         }
 
-        let html=await composeMaket_New( // вызываем построение макета новости
+        let html=await composeMaket_New( // вызываем построение макета одной новости
             { // служебные параметры
                 connection, // соединение с БД - мы полагаем, что макету потребуется делать свои операции с БД
                 logFN, // имя файла лога - мы полагаем, что макету потребуется что-то записать в лог
@@ -52,7 +52,7 @@ webserver.get('/new/:urlcode', async (req, res) => {
         res.send(html);
     }
     catch ( error ) {
-        reportServerError(error,res,logFN);
+        reportServerError(error.stack,res,logFN);
     }
     finally {
         if ( connection )

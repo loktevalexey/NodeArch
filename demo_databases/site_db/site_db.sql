@@ -16,6 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `banners`
+--
+
+DROP TABLE IF EXISTS `banners`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `banners` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'идентификатор',
+  `html` text COMMENT 'HTML-код баннера',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='баннеры';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `banners`
+--
+
+LOCK TABLES `banners` WRITE;
+/*!40000 ALTER TABLE `banners` DISABLE KEYS */;
+INSERT INTO `banners` VALUES (12,'<div style=\"border: solid red 1px; background-color: lightyellow; padding: 20px\">баннер google adsense</div>'),(14,'<div style=\"border: solid red 1px; background-color: lightyellow; padding: 20px\">баннер акавиты</div>');
+/*!40000 ALTER TABLE `banners` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `block_types`
 --
 
@@ -60,7 +84,7 @@ CREATE TABLE `contents` (
 
 LOCK TABLES `contents` WRITE;
 /*!40000 ALTER TABLE `contents` DISABLE KEYS */;
-INSERT INTO `contents` VALUES (22,'макет \"страница одной новости\", шапка');
+INSERT INTO `contents` VALUES (11,'макет \"страница одной новости\", реклама'),(22,'макет \"страница одной новости\", шапка'),(33,'макет \"страница одной новости\", подвал'),(44,'макет \"страница одной новости\", новость из УРЛа'),(555,'контент новости \"goodmorning\"');
 /*!40000 ALTER TABLE `contents` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -79,7 +103,7 @@ CREATE TABLE `contents_blocks` (
   `block_attributes` mediumtext COMMENT 'атрибуты блока (для каждого типа блока свои!)',
   PRIMARY KEY (`id`),
   KEY `contents_blocks_c_co_i` (`content`,`content_ord`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='блоки в контентах';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='блоки в контентах';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,7 +112,7 @@ CREATE TABLE `contents_blocks` (
 
 LOCK TABLES `contents_blocks` WRITE;
 /*!40000 ALTER TABLE `contents_blocks` DISABLE KEYS */;
-INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL);
+INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,NULL);
 /*!40000 ALTER TABLE `contents_blocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -170,7 +194,7 @@ CREATE TABLE `news` (
 
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
-INSERT INTO `news` VALUES (1,'goodmorning','С добрым утром всех!',0,'доброе утро, приветствие','поздравление с добрым утром');
+INSERT INTO `news` VALUES (1,'goodmorning','С добрым утром всех!',555,'доброе утро, приветствие','поздравление с добрым утром');
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -183,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-16 14:05:21
+-- Dump completed on 2019-10-16 16:57:48
