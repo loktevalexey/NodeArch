@@ -18,18 +18,18 @@ async function composeMaket_New(coreData,appData) {
     html+=`</head>\n`;
 
     // скомпонуем HTML-код для каждой визуальной части сайта, построив соответствующий контент
-    let headContentHTML=await composeContent(22,coreData,appData); // мы точно знаем, что в макете одной новости в шапке - всегда контент 22
-    let bannersContentHTML=await composeContent(11,coreData,appData); // в макете одной новости в баннерах - всегда контент 11
-    let bottomContentHTML=await composeContent(33,coreData,appData); // в макете одной новости в подвале - всегда контент 33
-    let urlNewContentHTML=await composeContent(44,coreData,appData); // в макете одной новости в "новости из УРЛа" - всегда контент 44
+    let headContentHTMLs=await composeContent(22,coreData,appData); // мы точно знаем, что в макете одной новости в шапке - всегда контент 22
+    let bannersContentHTMLs=await composeContent(11,coreData,appData); // в макете одной новости в баннерах - всегда контент 11
+    let bottomContentHTMLs=await composeContent(33,coreData,appData); // в макете одной новости в подвале - всегда контент 33
+    let urlNewContentHTMLs=await composeContent(44,coreData,appData); // в макете одной новости в "новости из УРЛа" - всегда контент 44
 
     html+=`<table border=1 cellpadding=5 style='width: 100%; border-collapse: collapse'>\n`;
-    html+=`<tr><td colspan=2><i>ШАПКА</i><br>${headContentHTML}</td></tr>`;
-    html+=`<tr>`;
-    html+=`<td valign=top style='width: 300px'><i>РЕКЛАМА</i><br>${bannersContentHTML}</td>`;
-    html+=`<td valign=top><i>НОВОСТЬ ИЗ УРЛА</i><br>${urlNewContentHTML}</td>`;
-    html+=`</tr>`;
-    html+=`<tr><td colspan=2><i>ПОДВАЛ</i><br>${bottomContentHTML}</td></tr>`;
+    html+=`<tr><td colspan=2><i>ШАПКА</i><br>${headContentHTMLs.join("\n")}</td></tr>\n`;
+    html+=`<tr>\n`;
+    html+=`<td valign=top style='width: 300px'><i>РЕКЛАМА</i><br>${bannersContentHTMLs.join("\n")}</td>\n`;
+    html+=`<td valign=top><i>НОВОСТЬ ИЗ УРЛА</i><br>${urlNewContentHTMLs.join("\n")}</td>\n`;
+    html+=`</tr>\n`;
+    html+=`<tr><td colspan=2><i>ПОДВАЛ</i><br>${bottomContentHTMLs.join("\n")}</td></tr>\n`;
     html+=`</table>\n`;
 
     html+=`</html>\n`;

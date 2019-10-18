@@ -14,6 +14,7 @@ const {
     composeBlock_Banner,
     composeBlock_Contacts,
     composeBlock_URLNew_Header,composeBlock_URLNew_Text,
+    composeBlock_Container_LtR,composeBlock_Container_2Col,
 } = require("./blocks");
 
 async function composeContent(contentId,coreData,appData) {
@@ -26,7 +27,7 @@ async function composeContent(contentId,coreData,appData) {
         order by cb.content_ord
     ;`, [contentId]);
 
-    let contentHTML='';
+    let contentHTMLs=[];
     for ( let cb=0; cb<contentBlocks.length; cb++ ) {
         const contentBlock=contentBlocks[cb];
 
@@ -72,12 +73,18 @@ async function composeContent(contentId,coreData,appData) {
             case 'URL_NEW_TEXT':
                 blockHTML=await composeBlock_URLNew_Text(coreData,appData,blockAttributes);
                 break;                        
+            case 'CONTAINER_LTR':
+                blockHTML=await composeBlock_Container_LtR(coreData,appData,blockAttributes);
+                break;        
+            case 'CONTAINER_2COL':
+                blockHTML=await composeBlock_Container_2Col(coreData,appData,blockAttributes);
+                break;        
             default:
                 logLine(coreData.logFN,`cannot compose block id=${contentBlock.id} - type code ${contentBlock.block_type_code} unknown`);
         }
 
-        contentHTML+=blockHTML;
+        contentHTMLs.push(blockHTML);
     }
 
-    return contentHTML;
+    return contentHTMLs;
 }

@@ -30,8 +30,8 @@ async function composeBlock_Image(coreData,appData,blockAttributes) {
 
 async function composeBlock_WeatherForecast(coreData,appData,blockAttributes) {
     return `
-        город: ${blockAttributes.location}, период: ${blockAttributes.period}<br>
-        <img src='/images/weather-forecast.jpg' style='display: block; max-width: 400px'>
+город: ${blockAttributes.location}, период: ${blockAttributes.period}<br>
+<img src='/images/weather-forecast.jpg' style='display: block; max-width: 400px'>
     `;
 }
 
@@ -59,8 +59,28 @@ async function composeBlock_URLNew_Header(coreData,appData,blockAttributes) {
 }
 
 async function composeBlock_URLNew_Text(coreData,appData,blockAttributes) {
-    return composeContent(appData.newInfo.content,coreData,appData);
-    //return appData.newInfo.content;
+    const HTMLs=await composeContent(appData.newInfo.content,coreData,appData);
+    return HTMLs.join("\n");
+}
+
+async function composeBlock_Container_LtR(coreData,appData,blockAttributes) {
+    const HTMLs=await composeContent(blockAttributes.content,coreData,appData);
+    return `
+<table border=1 cellpadding=5 style='border-collapse: collapse'><tr>
+${HTMLs.map( html => `<td valign=top>${html}</td>` ).join("\n")}
+</tr></table>    
+    `;
+}
+
+async function composeBlock_Container_2Col(coreData,appData,blockAttributes) {
+    const HTML1s=await composeContent(blockAttributes.content1,coreData,appData);
+    const HTML2s=await composeContent(blockAttributes.content2,coreData,appData);
+    return `
+<table border=1 cellpadding=5 style='border-collapse: collapse'><tr>
+<td>\n${HTML1s.join("\n")}</td>\n
+<td>\n${HTML2s.join("\n")}</td>\n
+</tr></table>    
+    `;
 }
 
 module.exports={
@@ -71,4 +91,5 @@ module.exports={
     composeBlock_Banner,
     composeBlock_Contacts,
     composeBlock_URLNew_Header,composeBlock_URLNew_Text,
+    composeBlock_Container_LtR,composeBlock_Container_2Col,
 };

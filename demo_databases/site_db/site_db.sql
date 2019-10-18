@@ -104,7 +104,7 @@ CREATE TABLE `contents_blocks` (
   `block_attributes` mediumtext COMMENT 'атрибуты блока (для каждого типа блока свои!)',
   PRIMARY KEY (`id`),
   KEY `contents_blocks_c_co_i` (`content`,`content_ord`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='блоки в контентах';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='блоки в контентах';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `contents_blocks` (
 
 LOCK TABLES `contents_blocks` WRITE;
 /*!40000 ALTER TABLE `contents_blocks` DISABLE KEYS */;
-INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,'{\"text\":\"Всем привет!\"}'),(9,555,2,2,'{\"text\":\"С <b>давних</b> времён...\"}'),(10,555,3,2,'{\"text\":\"Но с <i>недавних</i> пор...\"}'),(11,555,4,3,'{\"image\":\"1\"}'),(12,555,5,4,'{\"location\":\"Минск\",\"period\":\"неделя\"}'),(13,555,6,2,'{\"text\":\"Всего вам доброго!\"}');
+INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,'{\"text\":\"Всем привет!\"}'),(9,555,2,2,'{\"text\":\"С <b>давних</b> времён...\"}'),(10,555,3,2,'{\"text\":\"Но с <i>недавних</i> пор...\"}'),(11,555,4,3,'{\"image\":1}'),(12,555,5,4,'{\"location\":\"Минск\",\"period\":\"неделя\"}'),(13,555,6,2,'{\"text\":\"Всего вам доброго!\"}'),(14,566,1,1,'{\"text\":\"Снова всем привет!\"}'),(15,566,2,2,'{\"text\":\"С <b>давних</b> времён...\"}'),(16,566,3,10,'{\"content\":777}'),(17,777,1,3,'{\"image\":1}'),(18,777,2,4,'{\"location\":\"Минск\",\"period\":\"неделя\"}'),(19,566,4,11,'{\"content1\":888,\"content2\":999}'),(20,888,2,3,'{\"image\":1}'),(21,888,1,2,'{\"text\":\"А вот картинка дня:\"}'),(22,999,1,4,'{\"location\":\"Минск\",\"period\":\"неделя\"}'),(23,999,2,2,'{\"text\":\"важней всего погода в доме!\"}');
 /*!40000 ALTER TABLE `contents_blocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,7 +186,7 @@ CREATE TABLE `news` (
   `metadescription` text NOT NULL COMMENT 'текст для meta description',
   PRIMARY KEY (`id`),
   KEY `news_uc_i` (`url_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='новости';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='новости';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,7 +195,7 @@ CREATE TABLE `news` (
 
 LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
-INSERT INTO `news` VALUES (1,'goodmorning','С добрым утром всех!',555,'доброе утро, приветствие','поздравление с добрым утром');
+INSERT INTO `news` VALUES (1,'goodmorning','С добрым утром всех!',555,'доброе утро, приветствие','поздравление с добрым утром'),(2,'goodevening','Доброго вечера всем!',566,'добрый вечер, приветствие','пожелание доброго вечера');
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -208,4 +208,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-18 11:13:57
+-- Dump completed on 2019-10-18 18:24:18
