@@ -24,12 +24,12 @@ async function composeMaket_New(coreData,appData) {
     let urlNewContentHTML=await composeContent(44,coreData,appData); // в макете одной новости в "новости из УРЛа" - всегда контент 44
 
     html+=`<table border=1 cellpadding=5 style='width: 100%; border-collapse: collapse'>\n`;
-    html+=`<tr><td colspan=2>ШАПКА<br>${headContentHTML}</td></tr>`;
+    html+=`<tr><td colspan=2><i>ШАПКА</i><br>${headContentHTML}</td></tr>`;
     html+=`<tr>`;
-    html+=`<td valign=top style='width: 300px'>РЕКЛАМА<br>${bannersContentHTML}</td>`;
-    html+=`<td valign=top>НОВОСТЬ ИЗ УРЛА<br>${urlNewContentHTML}</td>`;
+    html+=`<td valign=top style='width: 300px'><i>РЕКЛАМА</i><br>${bannersContentHTML}</td>`;
+    html+=`<td valign=top><i>НОВОСТЬ ИЗ УРЛА</i><br>${urlNewContentHTML}</td>`;
     html+=`</tr>`;
-    html+=`<tr><td colspan=2>ПОДВАЛ<br>${bottomContentHTML}</td></tr>`;
+    html+=`<tr><td colspan=2><i>ПОДВАЛ</i><br>${bottomContentHTML}</td></tr>`;
     html+=`</table>\n`;
 
     html+=`</html>\n`;

@@ -6,7 +6,7 @@ async function composeBlock_Header(coreData,appData,blockAttributes) {
 }
 
 async function composeBlock_FormattedText(coreData,appData,blockAttributes) {
-    return ``;
+    return `<div>${blockAttributes.text}</div>`;
 }
 
 async function composeBlock_Search(coreData,appData,blockAttributes) {
@@ -14,11 +14,25 @@ async function composeBlock_Search(coreData,appData,blockAttributes) {
 }
 
 async function composeBlock_Image(coreData,appData,blockAttributes) {
-    return ``;
+
+    const imageId=blockAttributes.image;
+    if ( !imageId )
+        return "";
+
+    let imageRow=await selectQueryRowFactory(coreData.connection, `
+        select url
+        from images
+        where id=?
+    ;`, [imageId]);
+
+    return `<img src='${imageRow.url}' style='display: block; max-width: 400px'>`;
 }
 
 async function composeBlock_WeatherForecast(coreData,appData,blockAttributes) {
-    return ``;
+    return `
+        город: ${blockAttributes.location}, период: ${blockAttributes.period}<br>
+        <img src='/images/weather-forecast.jpg' style='display: block; max-width: 400px'>
+    `;
 }
 
 async function composeBlock_Banner(coreData,appData,blockAttributes) {
@@ -27,13 +41,13 @@ async function composeBlock_Banner(coreData,appData,blockAttributes) {
     if ( !bannerId )
         return "";
 
-    let banner=await selectQueryRowFactory(coreData.connection, `
+    let bannerRow=await selectQueryRowFactory(coreData.connection, `
         select html
         from banners
         where id=?
     ;`, [bannerId]);
 
-    return banner.html;
+    return bannerRow.html;
 }
 
 async function composeBlock_Contacts(coreData,appData,blockAttributes) {

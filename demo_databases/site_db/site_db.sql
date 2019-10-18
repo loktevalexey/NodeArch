@@ -24,6 +24,7 @@ DROP TABLE IF EXISTS `banners`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `banners` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'идентификатор',
+  `code` varchar(50) NOT NULL DEFAULT '' COMMENT 'код баннера',
   `html` text COMMENT 'HTML-код баннера',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='баннеры';
@@ -35,7 +36,7 @@ CREATE TABLE `banners` (
 
 LOCK TABLES `banners` WRITE;
 /*!40000 ALTER TABLE `banners` DISABLE KEYS */;
-INSERT INTO `banners` VALUES (12,'<div style=\"border: solid red 1px; background-color: lightyellow; padding: 20px\">баннер google adsense</div>'),(14,'<div style=\"border: solid red 1px; background-color: lightyellow; padding: 20px\">баннер акавиты</div>');
+INSERT INTO `banners` VALUES (12,'GOOGLE_ADSENSE','<div style=\"border: solid red 1px; background-color: lightyellow; padding: 20px\">баннер google adsense</div>'),(14,'AKAVITA_COUNTER','<div style=\"border: solid red 1px; background-color: lightyellow; padding: 20px\">баннер акавиты</div>');
 /*!40000 ALTER TABLE `banners` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,7 +104,7 @@ CREATE TABLE `contents_blocks` (
   `block_attributes` mediumtext COMMENT 'атрибуты блока (для каждого типа блока свои!)',
   PRIMARY KEY (`id`),
   KEY `contents_blocks_c_co_i` (`content`,`content_ord`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='блоки в контентах';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='блоки в контентах';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +113,7 @@ CREATE TABLE `contents_blocks` (
 
 LOCK TABLES `contents_blocks` WRITE;
 /*!40000 ALTER TABLE `contents_blocks` DISABLE KEYS */;
-INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,'{\"text\":\"Всем привет!\"}');
+INSERT INTO `contents_blocks` VALUES (1,22,1,6,NULL),(2,11,1,5,'{\"banner\":12}'),(3,11,2,5,'{\"banner\":14}'),(4,33,1,9,NULL),(5,44,1,7,NULL),(6,44,2,8,NULL),(7,555,1,1,'{\"text\":\"Всем привет!\"}'),(9,555,2,2,'{\"text\":\"С <b>давних</b> времён...\"}'),(10,555,3,2,'{\"text\":\"Но с <i>недавних</i> пор...\"}'),(11,555,4,3,'{\"image\":\"1\"}'),(12,555,5,4,'{\"location\":\"Минск\",\"period\":\"неделя\"}'),(13,555,6,2,'{\"text\":\"Всего вам доброго!\"}');
 /*!40000 ALTER TABLE `contents_blocks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,4 +208,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-16 17:54:08
+-- Dump completed on 2019-10-18 11:13:57

@@ -45,6 +45,15 @@ async function composeContent(contentId,coreData,appData) {
         let blockHTML='';
 
         switch ( contentBlock.block_type_code ) {
+            case 'HEADER':
+                blockHTML=await composeBlock_Header(coreData,appData,blockAttributes);
+                break;
+            case 'FORMATTED_TEXT':
+                blockHTML=await composeBlock_FormattedText(coreData,appData,blockAttributes);
+                break;        
+            case 'IMAGE':
+                blockHTML=await composeBlock_Image(coreData,appData,blockAttributes);
+                break;                
             case 'SEARCH':
                 blockHTML=await composeBlock_Search(coreData,appData,blockAttributes);
                 break;
@@ -54,8 +63,8 @@ async function composeContent(contentId,coreData,appData) {
             case 'CONTACTS':
                 blockHTML=await composeBlock_Contacts(coreData,appData,blockAttributes);
                 break;
-            case 'HEADER':
-                blockHTML=await composeBlock_Header(coreData,appData,blockAttributes);
+            case 'WEATHER_FORECAST':
+                blockHTML=await composeBlock_WeatherForecast(coreData,appData,blockAttributes);
                 break;
             case 'URL_NEW_HEADER':
                 blockHTML=await composeBlock_URLNew_Header(coreData,appData,blockAttributes);
