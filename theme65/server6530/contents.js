@@ -13,7 +13,9 @@ const {
     composeBlock_WeatherForecast,
     composeBlock_Banner,
     composeBlock_Contacts,
+    composeBlock_News,
     composeBlock_URLNew_Header,composeBlock_URLNew_Text,
+    composeBlock_URLIndPage_Text,
     composeBlock_Container_LtR,composeBlock_Container_2Col,
 } = require("./blocks");
 
@@ -67,12 +69,18 @@ async function composeContent(contentId,coreData,appData) {
             case 'WEATHER_FORECAST':
                 blockHTML=await composeBlock_WeatherForecast(coreData,appData,blockAttributes);
                 break;
+            case 'NEWS_LIST':
+                blockHTML=await composeBlock_News(coreData,appData,blockAttributes);
+                break;
             case 'URL_NEW_HEADER':
                 blockHTML=await composeBlock_URLNew_Header(coreData,appData,blockAttributes);
                 break;
             case 'URL_NEW_TEXT':
                 blockHTML=await composeBlock_URLNew_Text(coreData,appData,blockAttributes);
-                break;                        
+                break;            
+            case 'URL_INDPAGE_TEXT':
+                blockHTML=await composeBlock_URLIndPage_Text(coreData,appData,blockAttributes);
+                break;            
             case 'CONTAINER_LTR':
                 blockHTML=await composeBlock_Container_LtR(coreData,appData,blockAttributes);
                 break;        

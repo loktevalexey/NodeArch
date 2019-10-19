@@ -1,4 +1,4 @@
-const { selectQueryRowFactory } = require("./utils_db");
+const { selectQueryRowFactory, selectQueryFactory } = require("./utils_db");
 const { composeContent } = require("./contents");
 
 async function composeBlock_Header(coreData,appData,blockAttributes) {
@@ -54,12 +54,30 @@ async function composeBlock_Contacts(coreData,appData,blockAttributes) {
     return `Наши контакты: тел. 233-322-233-322`;
 }
 
+async function composeBlock_News(coreData,appData,blockAttributes) {
+
+    let news=await selectQueryFactory(coreData.connection, `
+        select url_code, header
+        from news
+    ;`, []);
+
+    return `
+<h3>НОВОСТИ:</h3>
+${news.map( newRow => `<a href="/new/${newRow.url_code}">${newRow.header}</a>` ).join("<br>")}
+    `;
+}
+
 async function composeBlock_URLNew_Header(coreData,appData,blockAttributes) {
     return `<h1>${appData.newInfo.header}</h1>`;
 }
 
 async function composeBlock_URLNew_Text(coreData,appData,blockAttributes) {
     const HTMLs=await composeContent(appData.newInfo.content,coreData,appData);
+    return HTMLs.join("\n");
+}
+
+async function composeBlock_URLIndPage_Text(coreData,appData,blockAttributes) {
+    const HTMLs=await composeContent(appData.indPageInfo.content,coreData,appData);
     return HTMLs.join("\n");
 }
 
@@ -90,6 +108,8 @@ module.exports={
     composeBlock_WeatherForecast,
     composeBlock_Banner,
     composeBlock_Contacts,
+    composeBlock_News,
     composeBlock_URLNew_Header,composeBlock_URLNew_Text,
+    composeBlock_URLIndPage_Text,
     composeBlock_Container_LtR,composeBlock_Container_2Col,
 };
