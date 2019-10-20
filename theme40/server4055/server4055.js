@@ -14,7 +14,7 @@ const logFN = path.join(__dirname, '_server.log');
 const usersFN = path.join(__dirname, 'users.json');
 
 webserver.post('/register', (req, res) => { 
-    logLineAsync('регистрируем пользователя, login='+req.body.login+" age="+req.body.age);
+    logLineAsync(logFN,'регистрируем пользователя, login='+req.body.login+" age="+req.body.age);
 
     let usersJSON=fs.readFileSync(usersFN,"utf8");
     let users=JSON.parse(usersJSON);

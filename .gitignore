@@ -5,3 +5,4 @@
 *.code-workspace
 **/_server.log
 **/uploads
+_nodemon.log
