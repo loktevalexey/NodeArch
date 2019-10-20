@@ -2,7 +2,7 @@
 // запуск: node example2560 arg1 arg2
 // arg1==="a" - ничего не делать
 // arg1==="b" - сразу выход
-// arg1==="c" - запустить таймер на arg2 миллисекунд
+// arg1==="d" - запустить таймер на arg2 миллисекунд
 
 console.log("argv[0]: ",process.argv[0]);
 console.log("argv[1]: ",process.argv[1]);
@@ -18,10 +18,14 @@ switch ( arg1 ) {
         break;
     case "b":
         console.log("arg1=b - terminating immediately");
-        process.exit();
+        process.exit(); // немедленно остановить выполнение программы
         // break; - можно не писать - выполнение сюда не дойдёт
     case "c":
-        console.log("arg1=c - waiting "+arg2+" milliseconds");
+        console.log("arg1=c - terminating carefully");
+        process.kill(process.pid, 'SIGTERM'); // корректно остановить программу
+        break; // надо писать - выполнение сюда МОЖЕТ дойти
+    case "d":
+        console.log("arg1=d - waiting "+arg2+" milliseconds");
         setTimeout(()=>{
             console.log("waiting finished.");
         },arg2);
