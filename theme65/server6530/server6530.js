@@ -21,6 +21,12 @@ const webserver = express();
 const port = 6530;
 const logFN = path.join(__dirname, '_server.log');
 
+webserver.get('/', async (req, res, next) => { 
+    logLine(logFN,"обращение к / - рендерим как /main");
+    req.url='/main';
+    next();
+});
+
 // УРЛы вида /new/xxx
 webserver.get('/new/:urlcode', async (req, res) => { 
     let newUrlCode=req.params.urlcode;
@@ -41,6 +47,7 @@ webserver.get('/new/:urlcode', async (req, res) => {
             res.status(404).send("Извините, такой новости у нас нет!");
         }
 
+        // все новости рендерим по "макету одной новости", но можно для разных новостей использовать разные макеты
         let html=await composeMaket_New( // вызываем построение макета одной новости
             { // служебные параметры
                 connection, // соединение с БД - мы полагаем, что макету потребуется делать свои операции с БД
@@ -67,6 +74,8 @@ webserver.get('/:urlcode', async (req, res) => {
     let pageUrlCode=req.params.urlcode;
     logLine(logFN,'вид страницы: индивидуальная, urlcode='+pageUrlCode);
 
+    // если мы хотим запретить прямое обращение к /main из браузера - можно тут сравнить req.url и req.originalUrl
+
     let connection=null;
     try {
         connection=await newConnectionFactory(pool,res);
@@ -82,6 +91,7 @@ webserver.get('/:urlcode', async (req, res) => {
             res.status(404).send("Извините, такой страницы у нас нет!");
         }
 
+        // все новости рендерим по "макету индивидуальной страницы", но можно для разных индивидуальных страниц использовать разные макеты
         let html=await composeMaket_IndPage( // вызываем построение макета индивидуальной страницы
             { connection, logFN },
             { // данные приложения

@@ -51,7 +51,10 @@ async function composeBlock_Banner(coreData,appData,blockAttributes) {
 }
 
 async function composeBlock_Contacts(coreData,appData,blockAttributes) {
-    return `Наши контакты: тел. 233-322-233-322`;
+    return `
+Наши контакты: тел. 233-322-233-322<br>
+Лучшие страницы: <a href="/main">главная страница</a> <a href="/news">новости</a>
+`;
 }
 
 async function composeBlock_News(coreData,appData,blockAttributes) {
