@@ -39,6 +39,7 @@ webserver.get('/biathlon.html', function (req, res) {
 webserver.get('/tennis.html', function (req, res) {
     logLineAsync(logFN,"dynamic page "+req.url);
     
+    // для простоты используем синхронные функции, в боевом коде конечно надо использовать асинхронные
     const viewString=fs.readFileSync(path.join(__dirname, 'views','tennis_page.handlebars'),"utf8"); // шаблон страницы тенниса
     const viewTemplate = handlebars.compile(viewString); // получаем функцию, умеющую сформироват итоговый html на основе параметров
     const viewHTML = viewTemplate({ // вызываем эту функцию, передавая уже конкретные параметры
