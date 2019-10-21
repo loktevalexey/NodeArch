@@ -7,7 +7,7 @@
     "servers": "nodemon servers/servers.js",
     "servers_filelog": "nodemon servers/servers.js > _nodemon.log",
     "server3085:dev": "cross-env NODE_ENV=development VAR1=aaa node theme30/server3085/server3085.js",
-    "server3085:prod": "cross-env NODE_ENV=production  VAR1=bbb node theme30/server3085/server3085.js"
+    "server3085:prod": "cross-env NODE_ENV=production VAR1=bbb node theme30/server3085/server3085.js"
   },
   "repository": {
     "type": "git",
@@ -21,11 +21,13 @@
     "@babel/preset-env": "^7.6.0",
     "@babel/register": "^7.6.0",
     "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "cross-env": "^6.0.3",
     "express": "^4.16.4",
     "express-handlebars": "^3.1.0",
+    "helmet": "^3.21.1",
     "ignore-styles": "^5.0.1",
     "isomorphic-fetch": "^2.2.1",
     "jasmine-node": "^3.0.0",

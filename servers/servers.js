@@ -29,6 +29,7 @@ require("../theme40/server4082/server4082");
 require("../theme40/server4083/server4083");
 
 require("../theme45/server4530/server4530");
+require("../theme45/server4533/server4533");
 require("../theme45/server4542/server4542");
 require("../theme45/server4544/server4544");
 require("../theme45/server4560/server4560");
