@@ -1,6 +1,8 @@
 ﻿const express = require('express');
 const exphbs  = require('express-handlebars');
 const path = require('path');
+const fs = require('fs');
+const handlebars = require('handlebars'); // это только для страницы тенниса - она формируется низкоуровневым способом
 
 const { logLineAsync } = require('../../utils/utils');
 
@@ -33,6 +35,19 @@ webserver.get('/biathlon.html', function (req, res) {
         layout:'sport_layout',
         hello:"биатлонистам",
     });
+});
+webserver.get('/tennis.html', function (req, res) {
+    logLineAsync(logFN,"dynamic page "+req.url);
+    
+    const viewString=fs.readFileSync(path.join(__dirname, 'views','tennis_page.handlebars'),"utf8"); // шаблон страницы тенниса
+    const viewTemplate = handlebars.compile(viewString); // получаем функцию, умеющую сформироват итоговый html на основе параметров
+    const viewHTML = viewTemplate({ // вызываем эту функцию, передавая уже конкретные параметры
+        hello:"теннисистам",
+    });
+
+    const layoutString=fs.readFileSync(path.join(__dirname, 'views','layouts','sport_layout.handlebars'),"utf8"); // layout, общий для всех страниц
+
+    res.send(layoutString.split("{{{body}}}").join(viewHTML)); // в layout же {{{body}}} для подстановки конкретной страницы, подставляем руками
 });
 
 webserver.use(

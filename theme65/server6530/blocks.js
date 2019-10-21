@@ -1,6 +1,11 @@
 const { selectQueryRowFactory, selectQueryFactory } = require("./utils_db");
 const { composeContent } = require("./contents");
 
+// каждый блок возвращает свой html, скомпонованный прямо строковыми операциями
+// для сложной вёрстки это может быть неудобно
+// в примере 4542 показано, как использовать например handlebars для рендера шаблона в строку
+// сложные блоки могут действовать схожим образом
+
 async function composeBlock_Header(coreData,appData,blockAttributes) {
     return `<h2>${blockAttributes.text}</h2>`;
 }
