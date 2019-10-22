@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.37-MariaDB, for Win32 (AMD64)
+-- MySQL dump 10.16  Distrib 10.1.24-MariaDB, for Win32 (AMD64)
 --
 -- Host: localhost    Database: site_db
 -- ------------------------------------------------------
--- Server version	10.1.37-MariaDB
+-- Server version	10.1.24-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -143,6 +143,62 @@ INSERT INTO `images` VALUES (1,'SUNRISING','/images/sunrising.jpg');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `index_pages`
+--
+
+DROP TABLE IF EXISTS `index_pages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `index_pages` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'идентификатор',
+  `url` varchar(200) NOT NULL DEFAULT '' COMMENT 'URL страницы',
+  `group` varchar(10) NOT NULL DEFAULT '' COMMENT 'группа страниц - indpage, new...',
+  `group_params` varchar(250) NOT NULL DEFAULT '' COMMENT 'параметры группы страниц в формате JSON - код для УРЛа индивидуальной страницы, код для УРЛа новости...',
+  `html_crc` varchar(64) NOT NULL DEFAULT '' COMMENT 'CRC сырого содержимого страницы',
+  `add_dt` datetime NOT NULL COMMENT 'дата-время добавления страницы в этот список',
+  `last_render_dt` datetime NOT NULL COMMENT 'дата-время последнего формирования сырого содержимого страницы',
+  `last_modification_dt` datetime NOT NULL COMMENT 'дата-время последнего изменения сырого содержимого страницы',
+  PRIMARY KEY (`id`),
+  KEY `index_pages_url_i` (`url`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='проиндексированные страницы сайта (СЕО + внутренний поиск)';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `index_pages`
+--
+
+LOCK TABLES `index_pages` WRITE;
+/*!40000 ALTER TABLE `index_pages` DISABLE KEYS */;
+/*!40000 ALTER TABLE `index_pages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `index_pages_words`
+--
+
+DROP TABLE IF EXISTS `index_pages_words`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `index_pages_words` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'идентификатор',
+  `index_page` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'страница сайта (id в index_pages)',
+  `word_ord` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'номер слова на странице',
+  `word` varchar(10) NOT NULL DEFAULT '' COMMENT 'слово',
+  PRIMARY KEY (`id`),
+  KEY `index_pages_words_ip_wo_i` (`index_page`,`word_ord`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='проиндексированные страницы сайта (СЕО + внутренний поиск)';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `index_pages_words`
+--
+
+LOCK TABLES `index_pages_words` WRITE;
+/*!40000 ALTER TABLE `index_pages_words` DISABLE KEYS */;
+/*!40000 ALTER TABLE `index_pages_words` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `indpages`
 --
 
@@ -209,4 +265,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-20 10:44:52
+-- Dump completed on 2019-10-22 16:53:44
