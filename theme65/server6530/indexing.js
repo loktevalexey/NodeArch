@@ -73,15 +73,19 @@ async function processURL(connection,urlInfo) {
     // получаем контрольную сумму HTML-кода (сырого содержимого УРЛа)
     // можно любым алгоритмом, который даёт хотя бы 64-битный CRC (32 бита точно мало, велика вероятность коллизий)
     const htmlCRC=sha256(html);
+    
+    // получаем содержимое тега title
+    const titleRes=/<title>(.+)<\/title>/.exec(html);
+    const title=titleRes ? titleRes[1] : "";
 
     // в таблице index_urls проверяем, есть ли такой УРЛ
     let indexUrls=await selectQueryFactory(connection, `select id, html_crc from index_urls where url=?;`, [urlInfo.url]);
     if ( indexUrls.length===0 ) {
         // такого УРЛа раньше не было - добавляем...
         await modifyQueryFactory(connection, `
-            insert into index_urls(url,group_code,group_params,html_crc,add_dt,actual_flag,last_render_dt,last_modification_dt) 
-            values (?,?,?,?,now(),1,now(),now())
-        ;`, [urlInfo.url,urlInfo.groupCode,JSON.stringify(urlInfo.groupParams),htmlCRC]);
+            insert into index_urls(url,title,group_code,group_params,html_crc,add_dt,actual_flag,last_render_dt,last_modification_dt) 
+            values (?,?,?,?,?,now(),1,now(),now())
+        ;`, [urlInfo.url,title,urlInfo.groupCode,JSON.stringify(urlInfo.groupParams),htmlCRC]);
         const indexUrlId=await getLastInsertedId(connection);
         // и индексируем содержимое
         await indexURLContent(connection,indexUrlId,html);
@@ -97,7 +101,7 @@ async function processURL(connection,urlInfo) {
         if ( indexUrls[0].html_crc!==htmlCRC ) {
             // содержимое изменилось! надо переиндексировать
             await indexURLContent(connection,indexUrlId,html);
-            await modifyQueryFactory(connection, `update index_urls set last_modification_dt=now() where id=?;`, [indexUrlId]);
+            await modifyQueryFactory(connection, `update index_urls set title=?, html_crc=?, last_modification_dt=now() where id=?;`, [title,htmlCRC,indexUrlId]);
         }
 
     }
@@ -131,6 +135,8 @@ async function processURL(connection,urlInfo) {
         console.log(urlInfo.url);
         await processURL(connection,urlInfo);
     }
+
+    await modifyQueryFactory(connection, `delete from index_urls where actual_flag=0;`, []);
 
     connection.release();
 
