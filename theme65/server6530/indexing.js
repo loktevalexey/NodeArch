@@ -120,8 +120,8 @@ async function processURL(connection,urlInfo) {
     let urls=await getUrls(connection);
 
     // для полной переиндексации
-    await modifyQueryFactory(connection, `delete from index_urls_words;`);
-    await modifyQueryFactory(connection, `delete from index_urls;`);
+    //await modifyQueryFactory(connection, `delete from index_urls_words;`);
+    //await modifyQueryFactory(connection, `delete from index_urls;`);
 
     await modifyQueryFactory(connection, `update index_urls set actual_flag=0;`, []);
 
