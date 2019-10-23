@@ -5,6 +5,8 @@ const { sha256 } = require("js-sha256");
 const { newConnectionFactory, selectQueryFactory, modifyQueryFactory, getLastInsertedId } = require("./utils_db");
 const { removeTags } = require("./utils");
 
+const wordRE=/[а-яА-ЯёЁa-zA-Z]{4,}/g; // регулярка для поиска того, что мы будем считать отдельным словом
+
 async function getUrls(connection) {
 
     let urls=[];
@@ -34,30 +36,28 @@ async function indexURLContent(connection,indexUrlId,html) {
 
     // удаляем все теги, заменяем на пробелы, чтобы не склеились тексты из соседних тегов
     // (полагаем, что выделений тегами прямо посреди слов не бывает)
+    // ещё лучше было бы открытие/закрытие блочных тегов заменить на \n, а строчных - на пробел, получилось бы лучше форматировать результаты поиска
     let text=removeTags(html," ");
-    // оставляем только буквы
-    text=text.replace(/[^а-яА-ЯёЁ]/g," ");
-    const words=text
-        .toUpperCase()
-        .split(/\s+/) // получаем массив слов
-        .filter(word => word.length>3) // удаляем пустые и слишком короткие слова
-    ;
 
     // удаляем все старые слова по этому УРЛу из таблицы
     await modifyQueryFactory(connection, `delete from index_urls_words where index_url=?;`, [indexUrlId]);
 
-    if ( words.length ) {
-        // добавляем все новые слова по этому УРЛу
-        // можно сделать много SQL-запросов insert, но это очень неэффективно
-        // скомпонуем один запрос в формате insert into таблица(поля) values (значения), (значения), (значения);
-        let valuesTexts=[];
-        let valuesDatas=[];
-        words.forEach( (word,index) => { 
-            valuesTexts.push(`(${indexUrlId},${index},?)`); 
-            valuesDatas.push(word);
-        } );
-        await modifyQueryFactory(connection, `insert into index_urls_words(index_url,word_ord,word) values ${valuesTexts.join(", ")};`, valuesDatas);
+    // добавляем все новые слова по этому УРЛу
+    // можно сделать много SQL-запросов insert, но это очень неэффективно
+    // скомпонуем один запрос в формате insert into таблица(поля) values (значения), (значения), (значения);
+    let valuesTexts=[];
+    let valuesDatas=[];
+    while (true) {
+        let searchRes=wordRE.exec(text);
+        if ( !searchRes )
+            break;
+        //console.log(searchRes[0],searchRes.index);
+
+        valuesTexts.push(`(${indexUrlId},${searchRes.index},?)`); 
+        valuesDatas.push(searchRes[0].toUpperCase());
     }
+    if ( valuesTexts.length )
+        await modifyQueryFactory(connection, `insert into index_urls_words(index_url,clean_txt_index,word) values ${valuesTexts.join(", ")};`, valuesDatas);
 
 }
 
@@ -66,6 +66,9 @@ async function processURL(connection,urlInfo) {
     // обращаемся к серверу 6530 (полагаем что он запущен) по указанному УРЛу GET-запросом, читаем HTML-код страницы, как читает его браузер
     const response=await fetch('http://localhost:6530'+urlInfo.url);
     const html=await response.text();
+    // более качественный подход - каждый блочок умеет возвращать и HTML-код для браузера+поисковиков, и текстовое представление для внутреннего поиска
+    // и например блочок "заголовок" вернёт всё как сейчас, а блочок "баннер" не вернёт ничего, а блочок "прогноз погоды" вернёт слова "прогноз неделя Минск"
+    // и мы здесь могли бы вместо fetch вызвать построение всей страницы с некой опцией, заставляющей блочки возвращать именно такое текстовое представление
 
     // получаем контрольную сумму HTML-кода (сырого содержимого УРЛа)
     // можно любым алгоритмом, который даёт хотя бы 64-битный CRC (32 бита точно мало, велика вероятность коллизий)
@@ -115,6 +118,10 @@ async function processURL(connection,urlInfo) {
     let connection=await newConnectionFactory(pool,null);
 
     let urls=await getUrls(connection);
+
+    // для полной переиндексации
+    await modifyQueryFactory(connection, `delete from index_urls_words;`);
+    await modifyQueryFactory(connection, `delete from index_urls;`);
 
     await modifyQueryFactory(connection, `update index_urls set actual_flag=0;`, []);
 
