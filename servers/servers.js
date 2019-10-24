@@ -39,6 +39,7 @@ require("../theme55/server5633/server5633");
 
 require("../theme60/server6082/server6082");
 require("../theme60/server6086/server6086");
+require("../theme60/server6088/server6088");
 
 require("../theme65/server6530/server6530");
 

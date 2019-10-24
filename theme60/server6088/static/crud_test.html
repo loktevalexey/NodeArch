@@ -1,0 +1,184 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+    <table><tr>
+        <td style='padding-right: 30px' valign=top>
+
+            <h2>READ всего списка</h2>
+            <input type=button onclick='readAllTest()' value='получить'>
+            <div id='IReadAllResult'></div>
+
+        </td>
+        <td valign=top>
+
+                <h2>READ одной группы</h2>
+                Название: <input type=text id=IReadOneName>
+                <input type=button onclick='readOneTest()' value='получить'>
+                <div id='IReadOneResult'></div>
+
+                <h2 style='padding-top: 30px'>CREATE группы</h2>
+                Название: <input type=text id=ICreateName>
+                Дата старта: <input type=date id=ICreateLessonsStartDat>
+                <input type=button onclick='createTest()' value='создать'>
+                <div id='ICreateResult'></div>
+
+                <h2 style='padding-top: 30px'>UPDATE группы</h2>
+                Id: <input type=number id=IUpdateId>
+                Новое название: <input type=text id=IUpdateName>
+                Новая дата старта: <input type=date id=IUpdateLessonsStartDat>
+                <input type=button onclick='updateTest()' value='изменить'>
+                <div id='IUpdateResult'></div>
+
+                <h2 style='padding-top: 30px'>DELETE группы</h2>
+                Id: <input type=number id=IDeleteId>
+                <input type=button onclick='deleteTest()' value='удалить'>
+                <div id='IDeleteResult'></div>
+
+        </td>
+    </tr></table>
+
+    <script>
+
+        async function readAllTest() {
+            const fetchOptions={
+                headers: {
+                    'Accept': 'application/json', // в ответ ожидаем данные в формате JSON
+                },
+            };
+            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            if ( response.ok ) {
+                const data=await response.json();
+
+                let res='';
+                res+='<table border=1>';
+                data.forEach( row => {
+                    let lessons_start_dat=row.lessons_start_dat ? new Date(row.lessons_start_dat*1000) : null;
+                    res+='<tr>';
+                    res+=`<td>${row.id}</td>`;
+                    res+=`<td>${row.name}</td>`;
+                    res+=`<td>${lessons_start_dat}</td>`;
+                    res+='</tr>';
+                } );    
+                res+='</table>';
+
+                document.getElementById('IReadAllResult').innerHTML=res;
+            }
+            else
+                document.getElementById('IReadAllResult').innerHTML="ошибка чтения данных";
+        }
+
+        async function readOneTest() {
+            const groupName=document.getElementById('IReadOneName').value;
+            const fetchOptions={
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                    'Accept': 'application/json', // в ответ ожидаем данные в формате JSON
+                },
+            };
+            const response=await fetch('http://localhost:6088/v0/group/'+encodeURIComponent(groupName),fetchOptions);
+            if ( response.ok ) {
+                const data=await response.json();
+
+                let res='';
+                res+='<table border=1>';
+                data.forEach( row => {
+                    let lessons_start_dat=row.lessons_start_dat ? new Date(row.lessons_start_dat*1000) : null;
+                    res+='<tr>';
+                    res+=`<td>${row.id}</td>`;
+                    res+=`<td>${row.name}</td>`;
+                    res+=`<td>${lessons_start_dat}</td>`;
+                    res+='</tr>';
+                } );    
+                res+='</table>';
+
+                document.getElementById('IReadOneResult').innerHTML=res;
+            }
+            else
+                document.getElementById('IReadOneResult').innerHTML="ошибка чтения данных";
+        }
+
+        async function createTest() {
+            const groupName=document.getElementById('ICreateName').value;
+            const groupLessonsStartDatStr=document.getElementById('ICreateLessonsStartDat').value; 
+            let groupLessonsStartDat=null;
+            if ( groupLessonsStartDatStr ) { // в формате "YYYY-MM-DD"
+                let groupLessonsStartDatParts=groupLessonsStartDatStr.split("-").map(v=>Number(v));
+                groupLessonsStartDat=(new Date(groupLessonsStartDatParts[0],groupLessonsStartDatParts[1]-1,groupLessonsStartDatParts[2]));
+            }
+
+            const data={ name:groupName, lessons_start_dat:groupLessonsStartDat?groupLessonsStartDat/1000:null };
+            const fetchOptions={
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                    'Accept': 'text/plain', // в ответ будем ожидать просто id созданной группы
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            if ( response.ok ) {
+                const newGroupId=await response.text();
+                document.getElementById('ICreateResult').innerHTML="добавлена группа с id="+newGroupId;
+            }
+            else {
+                document.getElementById('ICreateResult').innerHTML="ошибка добавления группы";
+            }
+
+        }
+
+        async function updateTest() {
+            const groupId=document.getElementById('IUpdateId').value;
+            const groupName=document.getElementById('IUpdateName').value;
+            const groupLessonsStartDatStr=document.getElementById('IUpdateLessonsStartDat').value; 
+            let groupLessonsStartDat=null;
+            if ( groupLessonsStartDatStr ) {
+                let groupLessonsStartDatParts=groupLessonsStartDatStr.split("-").map(v=>Number(v));
+                groupLessonsStartDat=(new Date(groupLessonsStartDatParts[0],groupLessonsStartDatParts[1]-1,groupLessonsStartDatParts[2]));
+            }
+
+            const data={ id:groupId, name:groupName, lessons_start_dat:groupLessonsStartDat?groupLessonsStartDat/1000:null };
+            const fetchOptions={
+                method: "put",
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            if ( response.ok )
+                document.getElementById('IUpdateResult').innerHTML="изменена группа с id="+groupId;
+            else    
+                document.getElementById('IUpdateResult').innerHTML="ошибка изменения группы с id="+groupId;
+        }
+
+        async function deleteTest() {
+            const groupId=document.getElementById('IDeleteId').value;
+
+            const data={ id:groupId };
+            const fetchOptions={
+                method: "delete",
+                headers: {
+                    'Content-Type': 'application/json', // данные запроса передаём в формате JSON
+                },
+                body: JSON.stringify(data),
+            };
+
+            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            if ( response.ok )
+                document.getElementById('IDeleteResult').innerHTML="удалена группа с id="+groupId;
+            else
+                document.getElementById('IDeleteResult').innerHTML="ошибка удаления группы с id="+groupId;
+        }
+
+    </script>
+
+</body>
+
+</html>
