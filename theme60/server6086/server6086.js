@@ -12,7 +12,6 @@ const poolConfig={
     user     : 'nodeuser',    // каким пользователем подключаемся (на учебном сервере - "root")
     password : 'nodepass',    // каким паролем подключаемся (на учебном сервере - "1234")
     database : 'learning_db', // к какой базе данных подключаемся
-    debug: false,
 };
 let pool = mysql.createPool(poolConfig);
 
