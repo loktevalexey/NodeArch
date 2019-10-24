@@ -1,48 +1,48 @@
 
-<br>
+<br/>
 <form action="http://localhost:3550/service1" method=get target=example>
-    Логин: <input type=text name='login'><br>
-    Пароль: <input type=password name='password'><br>
+    Логин: <input type=text name='login'><br/>
+    Пароль: <input type=password name='password'><br/>
     <input type=hidden name='internalnum' value=555>
     <input type=submit value="отправить данные формы методом GET в формате application/x-www-form-urlencoded">
 </form>
 
-<br>
+<br/>
 <form action="http://localhost:3550/service2" method=post target=example>
-    Логин: <input type=text name='login'><br>
-    Пароль: <input type=password name='password'><br>
+    Логин: <input type=text name='login'><br/>
+    Пароль: <input type=password name='password'><br/>
     <input type=hidden name='internalnum' value=555>
     <input type=submit value="отправить данные формы методом POST в формате application/x-www-form-urlencoded">
 </form>
 
-<br>
+<br/>
 <form action="http://localhost:3550/service3" method=post enctype='multipart/form-data' target=example>
-    Логин: <input type=text name='login'><br>
-    Пароль: <input type=password name='password'><br>
+    Логин: <input type=text name='login'><br/>
+    Пароль: <input type=password name='password'><br/>
     <input type=hidden name='internalnum' value=555>
     <input type=submit value="отправить данные формы методом POST в формате multipart/form-data">
 </form>
 
-<br>
+<br/>
 <form action="http://localhost:3550/service4" method=post enctype='multipart/form-data' target=example>
-    Логин: <input type=text name='login'><br>
-    Пароль: <input type=password name='password'><br>
+    Логин: <input type=text name='login'><br/>
+    Пароль: <input type=password name='password'><br/>
     <input type=hidden name='internalnum' value=555>
-    <input type=file name='photo'><br>
+    <input type=file name='photo'><br/>
     <input type=submit value="отправить данные формы методом POST в формате multipart/form-data">
 </form>
-<br>
+<br/>
 
 <hr>
 
-<br><br>
+<br/><br/>
 <input type=button onclick="call_service1()" value='отправить данные формы методом GET в формате application/x-www-form-urlencoded'>
 
-<br><br>
+<br/><br/>
 <input type=button onclick="call_service2_urlencoded()" value='отправить данные формы методом POST в формате application/x-www-form-urlencoded'>
 
-<br><br>
-<input type=file id='photo2'><br>
+<br/><br/>
+<input type=file id='photo2'><br/>
 <input type=button onclick="call_service4_multipart()" value='отправить данные формы методом POST в формате multipart/form-data'>
 
 <script>
