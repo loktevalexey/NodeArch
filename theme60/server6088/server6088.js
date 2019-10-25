@@ -215,10 +215,11 @@ groupsRouter.delete('/groups', async (req, res) => {
     
 });
 
-// а потом добавляем весь groupsRouter как ГРУППУ маршрутов к веб-серверу
-// как говорят, примонтировать роуты по некоторому базовому УРЛу
-
+// а потом добавляем весь groupsRouter как ГРУППУ роутов к веб-серверу, добавляя к каждому роуту слева префикс /v0
+// как говорят, монтируем роуты по базовому УРЛу /v0
 webserver.use("/v0",groupsRouter);
+// а вот так бы мы получили ровно те же УРЛы, что были в примере 6086
+// webserver.use(groupsRouter);
 
 webserver.use(
     express.static(path.resolve(__dirname,"static"))
