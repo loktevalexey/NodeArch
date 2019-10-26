@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "servers": "nodemon servers/servers.js",
-    "servers_filelog": "nodemon servers/servers.js >> _nodemon.log",
+    "servers_filelog": "nodemon servers/servers.js >> /home/nodeuser/NodeArch/_nodemon.log",
     "server3085:dev": "cross-env NODE_ENV=development VAR1=aaa node theme30/server3085/server3085.js",
     "server3085:prod": "cross-env NODE_ENV=production VAR1=bbb node theme30/server3085/server3085.js"
   },
