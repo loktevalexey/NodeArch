@@ -16,6 +16,16 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `learning_db`
+--
+
+/*!40000 DROP DATABASE IF EXISTS `learning_db`*/;
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `learning_db` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `learning_db`;
+
+--
 -- Table structure for table `courses`
 --
 
@@ -221,4 +231,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-14 22:31:34
+-- Dump completed on 2019-10-26 14:28:58
