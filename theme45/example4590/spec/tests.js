@@ -53,7 +53,7 @@ describe('service call tests', function() {
             },
             body: params,
         };
-        const response=await fetch('http://localhost:4570/send',fetchOptions);
+        const response=await fetch('http://nodearch.e-learning.by:4570/send',fetchOptions);
         expect(response.status).toBe(200);
         done(); // мы закончили проверки, но Jasmine об этом не знает; вызывая done, мы говорим ему что можно выводить отчёт
     
@@ -75,7 +75,7 @@ describe('service call tests', function() {
             },
             body: params,
         };
-        const response=await fetch('http://localhost:4570/send',fetchOptions);
+        const response=await fetch('http://nodearch.e-learning.by:4570/send',fetchOptions);
         expect(response.status).toBe(400);
         done();
     
