@@ -50,7 +50,7 @@
                     'Accept': 'application/json', // в ответ ожидаем данные в формате JSON
                 },
             };
-            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            const response=await fetch('http://nodearch.e-learning.by:6088/v0/groups',fetchOptions);
             if ( response.ok ) {
                 const data=await response.json();
 
@@ -80,7 +80,7 @@
                     'Accept': 'application/json', // в ответ ожидаем данные в формате JSON
                 },
             };
-            const response=await fetch('http://localhost:6088/v0/group/'+encodeURIComponent(groupName),fetchOptions);
+            const response=await fetch('http://nodearch.e-learning.by:6088/v0/group/'+encodeURIComponent(groupName),fetchOptions);
             if ( response.ok ) {
                 const data=await response.json();
 
@@ -121,7 +121,7 @@
                 body: JSON.stringify(data),
             };
 
-            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            const response=await fetch('http://nodearch.e-learning.by:6088/v0/groups',fetchOptions);
             if ( response.ok ) {
                 const newGroupId=await response.text();
                 document.getElementById('ICreateResult').innerHTML="добавлена группа с id="+newGroupId;
@@ -151,7 +151,7 @@
                 body: JSON.stringify(data),
             };
 
-            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            const response=await fetch('http://nodearch.e-learning.by:6088/v0/groups',fetchOptions);
             if ( response.ok )
                 document.getElementById('IUpdateResult').innerHTML="изменена группа с id="+groupId;
             else    
@@ -170,7 +170,7 @@
                 body: JSON.stringify(data),
             };
 
-            const response=await fetch('http://localhost:6088/v0/groups',fetchOptions);
+            const response=await fetch('http://nodearch.e-learning.by:6088/v0/groups',fetchOptions);
             if ( response.ok )
                 document.getElementById('IDeleteResult').innerHTML="удалена группа с id="+groupId;
             else
