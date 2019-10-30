@@ -1,0 +1,33 @@
+﻿<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body>
+
+<div style='border: solid red 1px'>
+  <h3>Виды спорта:</h5>
+  <ol style="list-style-type: square" id=ISports>
+  </ol>
+</div>
+
+<script>
+
+    async function composeSports() {
+        const response=await fetch('/sports.json');
+        if ( response.ok ) {
+            const sports=await response.json();
+
+            let sportsHTML=sports.map( sportName => `<li><a href="" target=_blank>${sportName}</a></li>` );
+            document.getElementById('ISports').innerHTML=sportsHTML.join("");
+        }  
+    }
+
+    composeSports();
+
+</script>
+
+</body>
+
+</html>
