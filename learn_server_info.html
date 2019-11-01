@@ -1,0 +1,91 @@
+<h1>Информация об учебных серверах</h1>
+
+
+
+<h2>сервер</h2>
+
+ip-адрес: <b>178.172.195.18</b><br/>
+входить в систему Linux-пользователем <b>user</b>, пароль у каждого свой<br/>
+домашняя папка пользователя user: <b>/home/user</b><br/>
+операционная система на сервере: <b>Ubuntu 16.04</b><br/>
+порт http: <b>xx80</b> (у каждого свой)<br/>
+порт ssh: <b>xx22</b> (у каждого свой)<br/>
+установлены: node, git, MySQL, MongoDB, nginx<br/>
+
+<br/>
+<h2>MySQL</h2>
+
+Соединение &mdash; MySQL-пользователем <b>root</b> с паролем <b>1234</b>.<br/><br/>
+
+<table class=STable>
+
+<tr>
+    <td class=SCommand>
+        mysql -u root -p<br/>
+        mysql -u root -p <i>имя_базы</i>
+    </td>
+    <td>
+        войти в REPL-интерфейс MySQL (будет запрошен пароль MySQL-пользователя root)<br/>
+        позволяет давать SQL-запросы и видеть их результаты;<br/>
+        SQL-запросы ОБЯЗАТЕЛЬНО заканчивать точкой с запятой;<br/>
+        выход из REPL — команда quit или exit<br/>
+    </td>
+</tr>
+
+<tr>
+    <td class=SCommand>
+        nano /etc/mysql/mysql.conf.d/mysqld.cnf
+    </td>
+    <td>
+        открыть редактор nano для изменения файла конфигурации MySQL;<br/>
+        выход из редактора &mdash; Ctrl+X
+    </td>
+</tr>
+
+<tr>
+    <td class=SCommand>
+        service mysql status<br/>
+        service mysql stop<br/>
+        service mysql start<br/>
+        service mysql restart
+    </td>
+    <td>
+        посмотреть состояние сервера MySQL;<br/>
+        остановить сервер MySQL;<br/>
+        запустить сервер MySQL;<br/>
+        перезапустить сервер MySQL (например, если изменена конфигурация)<br/>
+        (для выполнения некоторых команд будет запрошен пароль Linux-пользователя user)
+    </td>
+</tr>
+
+            
+</table>
+
+<br/>
+<h2>MongoDB</h2>
+
+<table class=STable>
+
+    <tr>
+        <td class=SCommand>
+            sudo systemctl status mongodb<br/>
+            sudo systemctl stop mongodb<br/>
+            sudo systemctl start mongod<br/>
+            sudo systemctl restart mongodb
+        </td>
+        <td>
+            посмотреть состояние сервера MongoDB;<br/>
+            остановить сервер MongoDB;<br/>
+            запустить сервер MongoDB;<br/>
+            перезапустить сервер MongoDB<br/>
+            (для выполнения некоторых команд будет запрошен пароль linux-пользователя user)
+        </td>
+    </tr>
+            
+</table>
+
+<style>
+    .STable { border-collapse: collapse }
+    .STable td { vertical-align: top; border: solid gray 1px; padding: 5px }
+    .STable td.SCommand { font-family: monospace;     font-size: 15px; }
+</style>
