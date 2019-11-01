@@ -7,8 +7,11 @@ const { logLineAsync } = require('../../utils/utils');
 
 const webserver = express();
 
-const port = 4036;
+const port = 4037;
 const logFN = path.join(__dirname, '_server.log');
+
+// сюда будут попадать только ИДУЩИЕ СЕЙЧАС процессы сжатия картинок
+let compressPromisesCache={}; // ключ - УРЛ к которому идёт обращение, значение - промис, возвращаемый compressImage
 
 // промисифицированная версия fs.stat
 const statPromise = path => {
@@ -29,11 +32,7 @@ webserver.use(
 
 webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req, res) => {
 
-    // попадающие сюда УРЛы попадают также и в предыдущий обработчик
-    // и если он нашёл файл с таким именем в папке images_full - он его возвращает клиенту и цепочка обработчиков прерывается
-    // а если не нашёл - цепочка обработчиков продолжается и мы попадаем сюда
-
-    const fullFileName=req.params[0]; // если УРЛ для обработчика задан регуляркой, то в req.params попадает каждая скобочная группа из регулярки
+    const fullFileName=req.params[0];
     const fileNameOnly=req.params[1];
     const fileExtName=req.params[2];
     logLineAsync(logFN,`пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
@@ -54,11 +53,21 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     catch ( err ) {
         logLineAsync(logFN,`нет готовой маленькой картинки ${fullFileName}, будем сжимать большую и сохранять результат на будущее`);
 
-        const originPFN=path.resolve(__dirname,"images_full",`${fileNameOnly}.${fileExtName}`);
-        let compressStartDT=new Date();
-        await compressImage(originPFN,thumbPFN,300);
-        let compressDurationMS=(new Date())-compressStartDT;
-        logLineAsync(logFN,`сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
+        if ( !(fullFileName in compressPromisesCache) ) {
+            const originPFN=path.resolve(__dirname,"images_full",`${fileNameOnly}.${fileExtName}`);
+            let compressStartDT=new Date();
+            const compressPromise=compressImage(originPFN,thumbPFN,300);
+            compressPromisesCache[fullFileName]=compressPromise; // запоминаем в кэше промисов - процесс сжатия сейчас идёт
+            await compressPromise;
+            delete compressPromisesCache[fullFileName]; // удаляем из кэша промисов - процесс закончился
+            let compressDurationMS=(new Date())-compressStartDT;
+            logLineAsync(logFN,`сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
+        }
+        else {
+            logLineAsync(logFN,`в кэше промисов сейчас есть процесс сжатия картинки ${fullFileName}, не будем запускать параллельно второй, будем ждать того же промиса`);
+            const compressPromise=compressPromisesCache[fullFileName];
+            await compressPromise;
+        }
         
         res.sendFile( thumbPFN );
     }

@@ -20,6 +20,7 @@ require("../theme40/server4032/server4032");
 require("../theme40/server4033/server4033");
 require("../theme40/server4035/server4035");
 require("../theme40/server4036/server4036");
+require("../theme40/server4037/server4037");
 require("../theme40/server4039/server4039");
 require("../theme40/server4040/server4040");
 require("../theme40/server4052/server4052");
