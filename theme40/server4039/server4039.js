@@ -5,7 +5,7 @@ const { logLineSync } = require('../../utils/utils');
 
 const webserver = express();
 
-const port = 4037;
+const port = 4039;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.use(
