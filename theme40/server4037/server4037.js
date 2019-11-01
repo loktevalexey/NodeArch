@@ -80,6 +80,9 @@ logLineAsync(logFN,"web server running on port "+port);
 // масштабирует картинку из sourcePFN в resultPFN с указанной шириной с сохранением пропорций
 async function compressImage(sourcePFN, resultPFN, newWidth) {
 
+    // намеренно придержим процесс масштабирования, иначе трудно увидеть что кэш промисов работает
+    await new Promise( (resolve,reject) => { setTimeout(resolve,3000); } );
+
     let result = await Jimp.read(sourcePFN);
     const {width, height} = result.bitmap; // это размеры большой картинки
 
