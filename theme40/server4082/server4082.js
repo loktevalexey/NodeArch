@@ -13,6 +13,7 @@ webserver.get('/getdatasync', (req, res) => {
     logLineSync(logFN,"getdatasync called");
 
     let txt=fs.readFileSync(path.resolve(__dirname,"../site_football/stats.json"),"utf8");
+    res.setHeader("Content-Type", "application/json");
     res.send(txt);
 });
 
