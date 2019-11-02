@@ -10,7 +10,7 @@ const port = 3570;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get('/service1', (req, res) => { 
-    logLineSync(logFN,"service1 called");
+    logLineSync(logFN,`[${port}] `+"service1 called");
 
     res.setHeader("Content-Type", "text/plain; charset=UTF-8");
 
@@ -19,7 +19,7 @@ webserver.get('/service1', (req, res) => {
 });
 
 webserver.get('/service2', (req, res) => { 
-    logLineSync(logFN,"service2 called");
+    logLineSync(logFN,`[${port}] `+"service2 called");
 
     res.setHeader("Content-Type", "text/plain; charset=windows-1251");
 
@@ -28,7 +28,7 @@ webserver.get('/service2', (req, res) => {
 });
 
 webserver.get('/service3', (req, res) => { 
-    logLineSync(logFN,"service3 called");
+    logLineSync(logFN,`[${port}] `+"service3 called");
 
     res.setHeader("Content-Type", "text/plain; charset=UTF-8");
 

@@ -10,7 +10,7 @@ const logFN = path.join(__dirname, '_server.log');
 
 webserver.use(function (req, res, next) {
     // эту мидлварь добавляем ТОЛЬКО для логгирования, т.к. сам express.static не ведёт логи
-    logLineSync(logFN,"static server called, originalUrl="+req.originalUrl);
+    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
     next();
 });
 

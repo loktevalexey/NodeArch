@@ -9,7 +9,7 @@ const port = 4035;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.use(function (req, res, next) {
-    logLineSync(logFN,"static server called, originalUrl="+req.originalUrl);
+    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
     next();
 });
 

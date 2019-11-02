@@ -15,7 +15,7 @@ const port = 3550;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get('/service1', (req, res) => { 
-    logLineSync(logFN,"service1 called");
+    logLineSync(logFN,`[${port}] `+"service1 called");
 
     // этот сервис ожидает данных формы в формате application/x-www-form-urlencoded
 
@@ -26,7 +26,7 @@ webserver.get('/service1', (req, res) => {
 });
 
 webserver.post('/service2', (req, res) => { 
-    logLineSync(logFN,"service2 called");
+    logLineSync(logFN,`[${port}] `+"service2 called");
 
     // этот сервис ожидает данных формы в формате application/x-www-form-urlencoded
 
@@ -37,7 +37,7 @@ webserver.post('/service2', (req, res) => {
 });
 
 webserver.post('/service3', upload.none(), (req, res) => { // миддлварь, просто разбирающая данные формы в формате multipart/form-data
-    logLineSync(logFN,"service3 called");
+    logLineSync(logFN,`[${port}] `+"service3 called");
 
     console.log("request post data",req.body);
     
@@ -47,7 +47,7 @@ webserver.post('/service3', upload.none(), (req, res) => { // миддлварь
 // миддлварь, разбирающая данные формы в формате multipart/form-data и сохраняющая файл, прилетевший под именем photo
 const service4files = upload.fields( [ {name:'photo', maxCount:1} ] ); 
 webserver.post('/service4', service4files, (req, res) => { 
-    logLineSync(logFN,"service4 called");
+    logLineSync(logFN,`[${port}] `+"service4 called");
 
     console.log("request post data",req.body);
     console.log("request files",req.files); // req.files заполнила миддлварь upload.fields

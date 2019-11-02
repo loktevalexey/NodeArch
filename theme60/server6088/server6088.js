@@ -26,12 +26,12 @@ webserver.use(bodyParser.json());       // данные запросов буд�
 
 function reportServerError(error,res) {
     res.status(500).end();
-    logLineAsync(logFN,error);
+    logLineAsync(logFN,`[${port}] `+error);
 }
 
 function reportRequestError(error,res) {
     res.status(400).end();
-    logLineAsync(logFN,error);
+    logLineAsync(logFN,`[${port}] `+error);
 }
 
 // все обработчики добавляем в groupsRouter а не прямо в webserver

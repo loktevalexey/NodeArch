@@ -12,7 +12,7 @@ const logFN = path.join(__dirname, '_server.log');
 webserver.use(helmet()); // добавить к ответам сайта заголовки, повышающие безопасность
 
 webserver.use(function (req, res, next) {
-    logLineAsync(logFN,"static server called, originalUrl="+req.originalUrl);
+    logLineAsync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
     next();
 });
 

@@ -10,7 +10,7 @@ const port = 4082;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get('/getdatasync', (req, res) => { 
-    logLineSync(logFN,"getdatasync called");
+    logLineSync(logFN,`[${port}] `+"getdatasync called");
 
     let txt=fs.readFileSync(path.resolve(__dirname,"../site_football/stats.json"),"utf8");
     res.setHeader("Content-Type", "application/json");

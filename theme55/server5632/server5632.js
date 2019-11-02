@@ -14,7 +14,7 @@ const server = new WebSocket.Server({ port: port }); // создаём соке�
 
 server.on('connection', connection => { // connection - это сокет-соединение сервера с клиентом
 
-    logLineSync(logFN,"new connection established");
+    logLineSync(logFN,`[${port}] `+"new connection established");
 
     connection.send('hello from server to client! timer='+timer); // это сообщение будет отослано сервером каждому присоединившемуся клиенту
 
@@ -39,7 +39,7 @@ setInterval(()=>{
         if ( (Date.now()-client.lastkeepalive)>12000 ) {
             client.connection.terminate(); // если клиент уже давно не отчитывался что жив - закрываем соединение
             client.connection=null;
-            logLineSync(logFN,"один из клиентов отключился, закрываем соединение с ним");
+            logLineSync(logFN,`[${port}] `+"один из клиентов отключился, закрываем соединение с ним");
         }
         else
             client.connection.send('timer='+timer);

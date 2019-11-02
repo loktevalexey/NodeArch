@@ -23,7 +23,7 @@ function logLineSync(logFilePath,logLine) {
 }
 
 webserver.get('/service2', (req, res) => { 
-    logLineSync(logFN,"service2 called, get pars: "+JSON.stringify(req.query));
+    logLineSync(logFN,`[${port}] `+"service2 called, get pars: "+JSON.stringify(req.query));
     
     let par1=parseInt(req.query.par1)||0;
     let par2=escapeHTML(req.query.par2);
@@ -42,8 +42,8 @@ webserver.get('/service2', (req, res) => {
 
 webserver.listen(port);
 logLineSync(logFN,"web server running on port "+port);
-logLineSync(logFN,"environment variable NODE_ENV is "+process.env.NODE_ENV);
-logLineSync(logFN,"environment variable VAR1 is "+process.env.VAR1);
+logLineSync(logFN,`[${port}] `+"environment variable NODE_ENV is "+process.env.NODE_ENV);
+logLineSync(logFN,`[${port}] `+"environment variable VAR1 is "+process.env.VAR1);
 
 function escapeHTML(text) {
     if ( !text )

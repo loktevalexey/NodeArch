@@ -16,7 +16,7 @@ const logFN = path.join(__dirname, '_server.log');
 // т.к. к /service1 будет обращение со страниц с другим origin через AJAX методом POST, то браузер будет делать предварительный (preflight) запрос методом OPTIONS
 // в заголовках ответа надо и разрешить обращаться со страниц с любым origin, и разрешить те заголовки запроса которые мы готовы обрабатывать
 webserver.options('/service1', (req, res) => { 
-    logLineSync(logFN,"service1 preflight called");
+    logLineSync(logFN,`[${port}] `+"service1 preflight called");
 
     res.setHeader("Access-Control-Allow-Origin","*");
     res.setHeader("Access-Control-Allow-Headers","Content-Type");
@@ -25,7 +25,7 @@ webserver.options('/service1', (req, res) => {
 });
 
 webserver.post('/service1', (req, res) => { 
-    logLineSync(logFN,"service1 called");
+    logLineSync(logFN,`[${port}] `+"service1 called");
 
     //console.log("request headers",req.headers);
     const contentType=req.headers['content-type'];

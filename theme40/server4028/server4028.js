@@ -10,7 +10,7 @@ const port = 4028;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get("/mysite/*", (req, res) => { 
-    logLineSync(logFN,"static server called, originalUrl="+req.originalUrl);
+    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
 
     const fileName=req.originalUrl.substring(8);
     const filePath=path.resolve(__dirname,"../site_football",fileName);

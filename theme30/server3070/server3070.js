@@ -26,37 +26,37 @@ function logLineSync(logFilePath,logLine) {
 
 webserver.get('/service1', (req, res) => { 
     // при обращении по этому УРЛу - просто отдаём строку
-    logLineSync(logFN,'service1 called');
+    logLineSync(logFN,`[${port}] `+'service1 called');
     res.send("service1 ok!");
 });
 
 webserver.get('/service2', (req, res) => { 
     // при обращении по этому УРЛу - ответ зависит от GET-параметров
-    logLineSync(logFN,"service2 called, get pars: "+JSON.stringify(req.query));
+    logLineSync(logFN,`[${port}] `+"service2 called, get pars: "+JSON.stringify(req.query));
     res.send("service2 ok, par1="+req.query.par1+" par2="+req.query.par2);
 });
 
 webserver.get('/service3', (req, res) => { 
     // при обращении по этому УРЛу - ответ всегда ошибка 401
-    logLineSync(logFN,'service3 called');
+    logLineSync(logFN,`[${port}] `+'service3 called');
     res.status(401).end();
 });
 
 webserver.get('/service4', (req, res) => { 
     // при обращении по этому УРЛу - ответ всегда ошибка 401 и в качестве тела ответа - текст ошибки
-    logLineSync(logFN,'service4 called');
+    logLineSync(logFN,`[${port}] `+'service4 called');
     res.status(401).send("sorry, access denied!");
 });
 
 webserver.get('/service5', (req, res) => { 
     // при обращении по этому УРЛу - ответа просто не будет
-    logLineSync(logFN,'service5 called');
+    logLineSync(logFN,`[${port}] `+'service5 called');
 });
 
 webserver.post('/service6', (req, res) => { 
     // при обращении по этому УРЛу - ответ зависит от POST-данных
     // миддлварь urlencoded раскодировала данные POST-запроса и положила в req.body
-    logLineSync(logFN,'service6 called, req.body: '+JSON.stringify(req.body));
+    logLineSync(logFN,`[${port}] `+'service6 called, req.body: '+JSON.stringify(req.body));
     res.send("service6 ok, login="+req.body.login+" age="+req.body.age);
 });
 

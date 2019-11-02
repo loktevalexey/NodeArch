@@ -24,13 +24,13 @@ function logLineSync(logFilePath,logLine) {
 }
 
 webserver.get('/service1', (req, res) => { 
-    logLineSync(logFN,"service1 called, get pars: "+JSON.stringify(req.query));
+    logLineSync(logFN,`[${port}] `+"service1 called, get pars: "+JSON.stringify(req.query));
     res.setHeader("X-XSS-Protection", "0"); // добавляем в ответ специальный заголовок, чтобы отключить защитный механизм в Chrome
     res.send("service1 ok, par1="+req.query.par1+" par2="+req.query.par2);
 });
 
 webserver.get('/service2', (req, res) => { 
-    logLineSync(logFN,"service2 called, get pars: "+JSON.stringify(req.query));
+    logLineSync(logFN,`[${port}] `+"service2 called, get pars: "+JSON.stringify(req.query));
     
     let par1=parseInt(req.query.par1)||0;
     let par2=escapeHTML(req.query.par2);

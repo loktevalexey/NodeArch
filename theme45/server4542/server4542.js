@@ -16,28 +16,28 @@ const port = 4542;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get('/main.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     res.render('main_page',{  // отрендерить view "main_page"
         layout:'sport_layout', // в layout-е "sport_layout"
         hello:"участникам соревнований", // в подстановках использовать вот такие данные
     });
 });
 webserver.get('/football.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     res.render('football_page',{
         layout:'sport_layout',
         hello:"футболистам",
     });
 });
 webserver.get('/biathlon.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     res.render('biathlon_page',{
         layout:'sport_layout',
         hello:"биатлонистам",
     });
 });
 webserver.get('/tennis.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     
     // для простоты используем синхронные функции, в боевом коде конечно надо использовать асинхронные
     const viewString=fs.readFileSync(path.join(__dirname, 'views','tennis_page.handlebars'),"utf8"); // шаблон страницы тенниса

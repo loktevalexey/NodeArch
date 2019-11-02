@@ -36,7 +36,7 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     const fullFileName=req.params[0]; // если УРЛ для обработчика задан регуляркой, то в req.params попадает каждая скобочная группа из регулярки
     const fileNameOnly=req.params[1];
     const fileExtName=req.params[2];
-    logLineAsync(logFN,`пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
+    logLineAsync(logFN,`[${port}] пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
 
     const thumbPFN=path.resolve(__dirname,"images_thumb",fullFileName);
 
@@ -44,7 +44,7 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     try {
         const stats=await statPromise(thumbPFN);
         if ( stats.isFile() ) {
-            logLineAsync(logFN,`есть готовая маленькая картинка ${fullFileName}, отдаём её`);
+            logLineAsync(logFN,`[${port}] есть готовая маленькая картинка ${fullFileName}, отдаём её`);
             res.sendFile( thumbPFN );
         }   
         else {
@@ -52,13 +52,13 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
         }
     }
     catch ( err ) {
-        logLineAsync(logFN,`нет готовой маленькой картинки ${fullFileName}, будем сжимать большую и сохранять результат на будущее`);
+        logLineAsync(logFN,`[${port}] нет готовой маленькой картинки ${fullFileName}, будем сжимать большую и сохранять результат на будущее`);
 
         const originPFN=path.resolve(__dirname,"images_full",`${fileNameOnly}.${fileExtName}`);
         let compressStartDT=new Date();
         await compressImage(originPFN,thumbPFN,300);
         let compressDurationMS=(new Date())-compressStartDT;
-        logLineAsync(logFN,`сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
+        logLineAsync(logFN,`[${port}] сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
         
         res.sendFile( thumbPFN );
     }

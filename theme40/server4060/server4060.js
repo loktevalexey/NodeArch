@@ -10,7 +10,7 @@ const logFN = path.join(__dirname, '_server.log');
 
 webserver.use(function (req, res, next) {
     // можно без await - нам же неважно, когда запись строки лога реально завершится
-    logLineAsync(logFN,"static server called, originalUrl="+req.originalUrl);
+    logLineAsync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
     next();
 });
 

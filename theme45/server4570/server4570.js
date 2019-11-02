@@ -25,13 +25,13 @@ webserver.post('/send', (req, res) => {
     const errors = getAnketaValidationErrors(anketa);
 
     if ( !errors.length )  {
-        logLineAsync(logFN,"anketa ok");
+        logLineAsync(logFN,`[${port}] `+"anketa ok");
         res.send("anketa ok!");
     }
     else {
-        logLineAsync(logFN,"bad anketa");
+        logLineAsync(logFN,`[${port}] `+"bad anketa");
         errors.forEach( error => {
-            logLineAsync(logFN,"ошибка: "+error.errortext);
+            logLineAsync(logFN,`[${port}] `+"ошибка: "+error.errortext);
         } )
         res.status(400).send("bad anketa");
     }

@@ -27,7 +27,7 @@ function getMenu(currentUrl) {
 }
 
 webserver.get('/main.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     res.render('main_article',{
         layout:'article_layout',
         hello:"участникам соревнований",
@@ -35,7 +35,7 @@ webserver.get('/main.html', function (req, res) {
     });
 });
 webserver.get('/football.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     res.render('football_article',{
         layout:'article_layout',
         hello:"футболистам",
@@ -43,7 +43,7 @@ webserver.get('/football.html', function (req, res) {
     });
 });
 webserver.get('/biathlon.html', function (req, res) {
-    logLineAsync(logFN,"dynamic page "+req.url);
+    logLineAsync(logFN,`[${port}] `+"dynamic page "+req.url);
     res.render('biathlon_article',{
         layout:'article_layout',
         hello:"биатлонистам",

@@ -18,7 +18,7 @@ webserver.use(cookieParser());
 
 // миддлварь для логгирования
 webserver.use(function (req, res, next) {
-    logLineAsync(logFN,"server called, originalUrl="+req.originalUrl);
+    logLineAsync(logFN,`[${port}] `+"server called, originalUrl="+req.originalUrl);
     next();
 });
 
@@ -26,13 +26,13 @@ webserver.get("/hello", (req, res) => {
     // сюда придёт и пользователь без кука, и пользователь с куком
     console.log(req.cookies);
     if ( !req.cookies.username ) {
-        logLineAsync(logFN,"пользователь новый, покажем ему страницу с вопросом об имени");
+        logLineAsync(logFN,`[${port}] `+"пользователь новый, покажем ему страницу с вопросом об имени");
 
         const filePath=path.resolve(__dirname,"../site_cookies/new_user.html");
         sendPage(res,filePath);
     }
     else {
-        logLineAsync(logFN,"пользователя мы уже знаем, покажем ему страницу об этом");
+        logLineAsync(logFN,`[${port}] `+"пользователя мы уже знаем, покажем ему страницу об этом");
 
         const filePath=path.resolve(__dirname,"../site_cookies/known_user.html");
         sendPage(res,filePath);
@@ -40,8 +40,8 @@ webserver.get("/hello", (req, res) => {
 });
 
 webserver.post("/remember", (req, res) => { 
-    logLineAsync(logFN,"пользователь прислал своё имя - "+req.body.myname);
-    logLineAsync(logFN,"покажем ему страницу со спасибо и поставим ему кук");
+    logLineAsync(logFN,`[${port}] `+"пользователь прислал своё имя - "+req.body.myname);
+    logLineAsync(logFN,`[${port}] `+"покажем ему страницу со спасибо и поставим ему кук");
 
     res.cookie("username",req.body.myname); // важно - куки устанавливаются заголовками ответа, и любые заголовки должны быть посланы ДО тела ответа
 
@@ -50,7 +50,7 @@ webserver.post("/remember", (req, res) => {
 });
 
 function sendPage(res,filePath) {
-    logLineAsync(logFN,"отдаём файл "+filePath);
+    logLineAsync(logFN,`[${port}] `+"отдаём файл "+filePath);
     res.sendFile(filePath);
 }
 

@@ -35,7 +35,7 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     const fullFileName=req.params[0];
     const fileNameOnly=req.params[1];
     const fileExtName=req.params[2];
-    logLineAsync(logFN,`пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
+    logLineAsync(logFN,`[${port}] пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
 
     const thumbPFN=path.resolve(__dirname,"images_thumb",fullFileName);
 
@@ -43,7 +43,7 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     try {
         const stats=await statPromise(thumbPFN);
         if ( stats.isFile() ) {
-            logLineAsync(logFN,`есть готовая маленькая картинка ${fullFileName}, отдаём её`);
+            logLineAsync(logFN,`[${port}] есть готовая маленькая картинка ${fullFileName}, отдаём её`);
             res.sendFile( thumbPFN );
         }   
         else {
@@ -51,7 +51,7 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
         }
     }
     catch ( err ) {
-        logLineAsync(logFN,`нет готовой маленькой картинки ${fullFileName}, будем сжимать большую и сохранять результат на будущее`);
+        logLineAsync(logFN,`[${port}] нет готовой маленькой картинки ${fullFileName}, будем сжимать большую и сохранять результат на будущее`);
 
         if ( !(fullFileName in compressPromisesCache) ) {
             const originPFN=path.resolve(__dirname,"images_full",`${fileNameOnly}.${fileExtName}`);
@@ -61,10 +61,10 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
             await compressPromise;
             delete compressPromisesCache[fullFileName]; // удаляем из кэша промисов - процесс закончился
             let compressDurationMS=(new Date())-compressStartDT;
-            logLineAsync(logFN,`сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
+            logLineAsync(logFN,`[${port}] сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
         }
         else {
-            logLineAsync(logFN,`в кэше промисов сейчас есть процесс сжатия картинки ${fullFileName}, не будем запускать параллельно второй, будем ждать того же промиса`);
+            logLineAsync(logFN,`[${port}] в кэше промисов сейчас есть процесс сжатия картинки ${fullFileName}, не будем запускать параллельно второй, будем ждать того же промиса`);
             const compressPromise=compressPromisesCache[fullFileName];
             await compressPromise;
         }

@@ -22,12 +22,12 @@ webserver.use(bodyParser.json());       // данные запросов буд�
 
 function reportServerError(error,res) {
     res.status(500).end(); // в прод-режиме нельзя отсылать на клиент подробности ошибки!
-    logLineAsync(logFN,error);
+    logLineAsync(logFN,`[${port}] `+error);
 }
 
 function reportRequestError(error,res) {
     res.status(400).end();
-    logLineAsync(logFN,error);
+    logLineAsync(logFN,`[${port}] `+error);
 }
 
 // READ

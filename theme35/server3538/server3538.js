@@ -11,7 +11,7 @@ const port = 3538;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get('/service5', (req, res) => { 
-    logLineSync(logFN,"service5 called");
+    logLineSync(logFN,`[${port}] `+"service5 called");
 
     // т.к. к этому сервису идёт AJAX-запрос со страниц с другим происхождением (origin), надо явно это разрешить
     res.setHeader("Access-Control-Allow-Origin","*"); 
