@@ -4,33 +4,9 @@ const { sha256 } = require("js-sha256");
 
 const { newConnectionFactory, selectQueryFactory, modifyQueryFactory, getLastInsertedId } = require("./utils_db");
 const { removeTags } = require("./utils");
+const { getUrls } = require("./all_urls");
 
 const wordRE=/[а-яА-ЯёЁa-zA-Z]{4,}/g; // регулярка для поиска того, что мы будем считать отдельным словом
-
-async function getUrls(connection) {
-
-    let urls=[];
-
-    let indPages=await selectQueryFactory(connection, `select url_code from indpages;`, []);
-    indPages.forEach( indPageRow => {
-        urls.push({
-            url:`/${indPageRow.url_code}`,
-            groupCode:'indpage',
-            groupParams:{indPageURLCode:indPageRow.url_code},
-        });
-    } );
-
-    let news=await selectQueryFactory(connection, `select url_code from news;`, []);
-    news.forEach( newRow => {
-        urls.push({
-            url:`/new/${newRow.url_code}`,
-            groupCode:'new',
-            groupParams:{newURLCode:newRow.url_code},
-        });
-    } );
-
-    return urls;
-}
 
 async function indexURLContent(connection,indexUrlId,html) {
 
@@ -110,7 +86,7 @@ async function processURL(connection,urlInfo) {
 (async function() {
 
     const poolConfig={
-        connectionLimit : 1,      // server6530.js может создать 10 соединений, и этот скрипт ещё одно, думаем что СУБД выдержит 11 соединений
+        connectionLimit : 1,      // server6530.js может создать 10 соединений, и этот скрипт ещё одно, полагаем что СУБД выдержит 11 соединений
         host     : 'localhost',   // на каком компьютере расположена база данных
         user     : 'nodeuser',    // каким пользователем подключаемся (на учебном сервере - "root")
         password : 'nodepass',    // каким паролем подключаемся (на учебном сервере - "1234")
