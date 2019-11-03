@@ -20,11 +20,12 @@ webserver.use(
 );
 
 const serverRenderer = (req, res) => {
-    fs.readFile(path.resolve(__dirname, 'src','index.html'), 'utf8', (err, data) => {
+    fs.readFile(path.resolve(__dirname, 'src','index.html'), 'utf8', (err, indexStr) => {
         if (err) {
             console.error(err)
             return res.status(500).send('An error occurred');
         }
+
         // получаем HTML-код, соответствующий запрошенному УРЛу (он ведь разный для каждого УРЛа)
         let renderedHTML=ReactDOMServer.renderToString(
             <StaticRouter location={req.originalUrl} context={{}}>
@@ -32,10 +33,12 @@ const serverRenderer = (req, res) => {
             </StaticRouter>
         );
         //console.log("renderedHTML",renderedHTML);
+        logLineAsync(logFN,`[${port}] server-side rendered HTML ready, url=${req.originalUrl}, HTML length=${renderedHTML.length}`);
+
         // отдаём клиенту index.html с подставленным в container HTML-кодом
         // тем самым кодом, который React должен строить динамически внутри container
         return res.send(
-            data.replace(
+            indexStr.replace(
                 '<div id="container"></div>',
                 `<div id="container">${renderedHTML}</div>`
             )

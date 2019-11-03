@@ -23938,23 +23938,66 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var MobileClientInfo = function (_React$PureComponent) {
   _inherits(MobileClientInfo, _React$PureComponent);
 
-  function MobileClientInfo() {
+  function MobileClientInfo(props) {
     _classCallCheck(this, MobileClientInfo);
 
-    return _possibleConstructorReturn(this, (MobileClientInfo.__proto__ || Object.getPrototypeOf(MobileClientInfo)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (MobileClientInfo.__proto__ || Object.getPrototypeOf(MobileClientInfo)).call(this, props));
+
+    _this.state = {
+      clientTextInfo: null // о некоторых клиентах у нас есть дополнительная информация в текстовых файликах
+    };
+    return _this;
   }
 
   _createClass(MobileClientInfo, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.loadClientTextInfo();
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      var _this2 = this;
+
+      if (this.props.info.id !== prevProps.info.id) {
+        this.setState({ clientTextInfo: null }, function () {
+          _this2.loadClientTextInfo();
+        });
+      }
+    }
+  }, {
+    key: 'loadClientTextInfo',
+    value: function loadClientTextInfo() {
+      var _this3 = this;
+
+      if (this.props.info.id === 120) {
+        fetch('/client120info.txt').then(function (clientInfoResponse) {
+          clientInfoResponse.text().then(function (clientInfo) {
+            _this3.setState({ clientTextInfo: clientInfo });
+          });
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
 
       return _react2.default.createElement(
-        'h1',
+        'div',
         null,
-        '\u043A\u043B\u0438\u0435\u043D\u0442 \xAB',
-        this.props.info.fio,
-        '\xBB, \u0431\u0430\u043B\u0430\u043D\u0441 ',
-        this.props.info.balance
+        _react2.default.createElement(
+          'h1',
+          null,
+          '\u043A\u043B\u0438\u0435\u043D\u0442 \xAB',
+          this.props.info.fio,
+          '\xBB, \u0431\u0430\u043B\u0430\u043D\u0441 ',
+          this.props.info.balance
+        ),
+        _react2.default.createElement(
+          'div',
+          null,
+          this.state.clientTextInfo
+        )
       );
     }
   }]);
