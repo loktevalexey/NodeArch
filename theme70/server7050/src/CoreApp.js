@@ -3,7 +3,7 @@
 import PagesRouter from './pages/PagesRouter';
 import PagesLinks from './pages/PagesLinks';
 
-class AllApp extends React.Component {
+class CoreApp extends React.Component {
           
   render() {
 
@@ -18,4 +18,4 @@ class AllApp extends React.Component {
 
 }
 
-export default AllApp;
+export default CoreApp;

@@ -8,38 +8,43 @@ import { StaticRouter } from 'react-router-dom';
 const { logLineAsync } = require('../../utils/utils');
 
 const webserver = express();
-const router = express.Router();
 
 const port = 7050;
 const logFN = path.join(__dirname, '_server.log');
 
-import AllApp from './src/AllApp';
+import CoreApp from './src/CoreApp';
 
-const serverRenderer = (req, res, next) => {
+// когда из браузера загружаются js- и css-бандлы, они отдаются напрямую из папки build как обычная статика
+webserver.use(
+    express.static(path.resolve(__dirname, 'build'), { maxAge: '30d' })
+);
+
+const serverRenderer = (req, res) => {
     fs.readFile(path.resolve(__dirname, 'src','index.html'), 'utf8', (err, data) => {
         if (err) {
             console.error(err)
             return res.status(500).send('An error occurred');
         }
-        let renderedHTML=ReactDOMServer.renderToString(<StaticRouter location="/" context={{}}><AllApp /></StaticRouter>);
-        console.log("renderedHTML",renderedHTML);
+        // получаем HTML-код, соответствующий запрошенному УРЛу (он ведь разный для каждого УРЛа)
+        let renderedHTML=ReactDOMServer.renderToString(
+            <StaticRouter location={req.originalUrl} context={{}}>
+                <CoreApp />
+            </StaticRouter>
+        );
+        //console.log("renderedHTML",renderedHTML);
+        // отдаём клиенту index.html с подставленным в container HTML-кодом
+        // тем самым кодом, который React должен строить динамически внутри container
         return res.send(
             data.replace(
                 '<div id="container"></div>',
                 `<div id="container">${renderedHTML}</div>`
-                //'<div id="root">aaa</div>',
             )
         );
     });
 }
 
-router.use('^/$', serverRenderer);
-
-router.use(
-    express.static(path.resolve(__dirname, '..', 'build'), { maxAge: '30d' })
-);
-
-webserver.use(router);
+// если обращение идёт к любому другому УРЛу - запускаем SSR
+webserver.use('*', serverRenderer);
 
 webserver.listen(port, () => {
     logLineAsync(logFN,"SSR running on port "+port);

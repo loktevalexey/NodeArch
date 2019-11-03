@@ -2,9 +2,9 @@
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
-import AllApp from "./AllApp";
+import CoreApp from "./CoreApp";
 
 ReactDOM.hydrate(
-  <BrowserRouter><AllApp /></BrowserRouter>, 
+  <BrowserRouter><CoreApp /></BrowserRouter>, 
   document.getElementById('container') 
 );
