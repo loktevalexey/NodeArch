@@ -1,0 +1,44 @@
+div.MobileClient
+{
+  padding: 2px 0;
+}
+
+span.MobileClientBalance
+{
+  float: right;
+  width: 30px;
+  font-weight: bold;
+  text-align: right;
+}
+
+span.MobileClientFIO
+{
+  margin-right: 30px;
+}
+.MobileCompany
+{
+  border: double gray 3px;
+  width: 180px;
+  padding: 3px 7px;
+  background-color: lightyellow;
+}
+
+.MobileCompanyName
+{
+  font-weight: bold;
+}
+
+.MobileCompanyClients
+{
+  padding-top: 5px;
+}
+.PageLink {
+    color: black;
+    margin-right: 10px;
+}
+
+.ActivePageLink {
+    font-weight: bold;
+}
+
+/*# sourceMappingURL=bundle.css.map*/
