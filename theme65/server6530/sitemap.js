@@ -2,7 +2,7 @@
 // ожидается, что этот скрипт запускается регулярно по крону или автоматически после внесения изменений через админку
 
 const mysql = require("mysql");
-const fs = require('fs');
+const fsp = require('fs').promises; // используем экспериментальное API работы с файлами, основанное на промисах
 const path = require("path");
 
 const { newConnectionFactory } = require("./utils_db");
@@ -49,21 +49,20 @@ ${
 </urlset>
     `;
 
-    fs.writeFile(path.resolve(__dirname,"sitemap.xml"), sitemap, (err) => {
-        if (err) 
-            console.log(err);
-        else
-            console.log('sitemap.xml has been saved.');
+    try {
+        await fsp.writeFile(path.resolve(__dirname,"sitemap.xml"), sitemap);
+        console.log('sitemap.xml has been saved.');
+    }
+    catch ( err ) {
+        console.log(err);
+    }
 
-        connection.release();
+    connection.release();
 
-        pool.end(function(err) {
-            if (err) {
-                console.log(err.message);
-                return;
-            }
-        });
-        
+    pool.end(function(err) {
+        if (err) {
+            console.log(err.message);
+        }
     });
 
 })();
