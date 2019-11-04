@@ -1,4 +1,7 @@
-﻿const mysql = require("mysql");
+﻿// строит файл sitemap.xml
+// ожидается, что этот скрипт запускается регулярно по крону или автоматически после внесения изменений через админку
+
+const mysql = require("mysql");
 const fs = require("fs");
 const path = require("path");
 

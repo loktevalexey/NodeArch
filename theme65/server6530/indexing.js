@@ -1,4 +1,7 @@
-﻿const mysql = require("mysql");
+﻿// индексирует содержимое всех страниц для внутреннего поиска
+// ожидается, что этот скрипт запускается регулярно по крону или автоматически после внесения изменений через админку
+
+const mysql = require("mysql");
 const fetch = require("isomorphic-fetch");
 const { sha256 } = require("js-sha256");
 
