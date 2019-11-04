@@ -1,6 +1,6 @@
 ﻿const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const fsp = require('fs').promises; // используем экспериментальное API работы с файлами, основанное на промисах
 const Jimp = require('jimp');
 
 const { logLineAsync } = require('../../utils/utils');
@@ -9,18 +9,6 @@ const webserver = express();
 
 const port = 4036;
 const logFN = path.join(__dirname, '_server.log');
-
-// промисифицированная версия fs.stat
-const statPromise = path => {
-    return new Promise( (resolve,reject) => {
-        fs.stat(path,(err,stats) => {
-            if ( err )
-                reject(err);
-            else  
-                resolve(stats);      
-        });
-    } );
-};
 
 webserver.use(
     "/image",
@@ -42,7 +30,7 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
 
     // сначала проверим, может маленькая картинка уже готовая лежит в папке images_thumb
     try {
-        const stats=await statPromise(thumbPFN);
+        const stats=await fsp.stat(thumbPFN);
         if ( stats.isFile() ) {
             logLineAsync(logFN,`[${port}] есть готовая маленькая картинка ${fullFileName}, отдаём её`);
             res.sendFile( thumbPFN );
@@ -74,7 +62,6 @@ async function compressImage(sourcePFN, resultPFN, newWidth) {
     let result = await Jimp.read(sourcePFN);
     const {width, height} = result.bitmap; // это размеры большой картинки
 
-    let ratio = width/newWidth;
     let newHeight = height/width*newWidth; // ширину маленькой картинки знаем, вычисляем высоту маленькой
 
     result.resize(newWidth, newHeight);

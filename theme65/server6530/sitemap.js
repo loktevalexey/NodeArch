@@ -2,7 +2,7 @@
 // ожидается, что этот скрипт запускается регулярно по крону или автоматически после внесения изменений через админку
 
 const mysql = require("mysql");
-const fs = require("fs");
+const fs = require('fs');
 const path = require("path");
 
 const { newConnectionFactory } = require("./utils_db");

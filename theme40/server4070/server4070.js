@@ -1,7 +1,6 @@
 ﻿const express = require('express');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const fs = require('fs');
 
 const { logLineAsync } = require('../../utils/utils');
 
