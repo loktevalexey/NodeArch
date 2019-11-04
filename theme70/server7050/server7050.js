@@ -49,10 +49,10 @@ webserver.use(function (req, res, next) {
 */
 
 // если обращение идёт УРЛу / - запускаем SSR
-webserver.use('/', serverRenderer);
+webserver.use(/^\/$/, serverRenderer);
 // на самом деле, serverRenderer готов обработать любой УРЛ, но мы ПЕРЕД ним должны через middleware static отдать бандлы из папки build
 // а там есть файл index.html
-// а при обращении к УРЛу "/" middleware static отдаёт этот index.html, считая его совпадающим с этим УРЛ
+// а при обращении именно к УРЛу "/" middleware static отдаёт этот index.html, считая его совпадающим с этим УРЛ
 // поэтому ещё до middleware static отдельно указываем что именно этот УРЛ обрабатывается serverRenderer
 
 // когда из браузера загружаются js- и css-бандлы, они отдаются напрямую из папки build как обычная статика
