@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const path = require('path');
 const fsp = require('fs').promises; // используем экспериментальное API работы с файлами, основанное на промисах
+const querystring = require('querystring');
 const Jimp = require('jimp');
 
 const { logLineAsync } = require('../../utils/utils');
@@ -20,9 +21,9 @@ webserver.use(
 
 webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req, res) => {
 
-    const fullFileName=req.params[0];
-    const fileNameOnly=req.params[1];
-    const fileExtName=req.params[2];
+    const fullFileName=querystring.unescape(req.params[0]);
+    const fileNameOnly=querystring.unescape(req.params[1]);
+    const fileExtName=querystring.unescape(req.params[2]);
     logLineAsync(logFN,`[${port}] пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
 
     const thumbPFN=path.resolve(__dirname,"images_thumb",fullFileName);

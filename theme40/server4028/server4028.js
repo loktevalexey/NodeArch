@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const querystring = require('querystring');
 
 const { logLineSync } = require('../../utils/utils');
 
@@ -10,9 +11,10 @@ const port = 4028;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get("/mysite/*", (req, res) => { 
-    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
+    const originalUrlDecoded=querystring.unescape(req.originalUrl);
+    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+originalUrlDecoded);
 
-    const fileName=req.originalUrl.substring(8);
+    const fileName=originalUrlDecoded.substring(8);
     const filePath=path.resolve(__dirname,"../site_football",fileName);
 
     try {

@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const querystring = require('querystring');
 
 const { logLineSync } = require('../../utils/utils');
 
@@ -11,13 +12,16 @@ const logFN = path.join(__dirname, '_server.log');
 
 webserver.get("/mysite/*", (req, res) => { 
 
-    // мы будем часть УРЛа использовать как путь+имя файла
-    // но в УРЛе пробелы, русские буквы и другие символы кодируются через urlencode (из " " получается "%20", из "п" - "%D0%BF")
-    const originalUrlDecoded=urldecode(req.originalUrl);
-
+    // мы будем часть "сырого" УРЛа (req.originalUrl) использовать как имя файла
+    // но в УРЛе пробелы, русские буквы и другие символы url-кодируются (из " " получается "%20", из "п" - "%D0%BF")
+    // а в именах файлов такое кодирование не применяется
+    // в браузере декодирование из УРЛ-формата в обычную строку делается вызовом urldecode
+    // под Node.js - вызовом querystring.unescape
+    // в req.params (данные из частей УРЛа), req.query (get-данные), req.body (post-данные) это декодирование уже сделано
+    const originalUrlDecoded=querystring.unescape(req.originalUrl);
     logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl+", originalUrlDecoded="+originalUrlDecoded);
 
-    const filePath=path.resolve(__dirname,"../site_football",req.originalUrlDecoded.substring(8));
+    const filePath=path.resolve(__dirname,"../site_football",originalUrlDecoded.substring(8));
 
     try {
         const stats=fs.statSync(filePath);

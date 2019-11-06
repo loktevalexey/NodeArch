@@ -1,6 +1,7 @@
 ﻿const express = require('express');
 const path = require('path');
 const fsp = require('fs').promises; // используем экспериментальное API работы с файлами, основанное на промисах
+const querystring = require('querystring');
 const Jimp = require('jimp');
 
 const { logLineAsync } = require('../../utils/utils');
@@ -21,14 +22,10 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     // и если он нашёл файл с таким именем в папке images_full - он его возвращает клиенту и цепочка обработчиков прерывается
     // а если не нашёл - цепочка обработчиков продолжается и мы попадаем сюда
 
-    const fullFileName=req.params[0]; // если УРЛ для обработчика задан регуляркой, то в req.params попадает каждая скобочная группа из регулярки
-    const fileNameOnly=req.params[1];
-    const fileExtName=req.params[2];
+    const fullFileName=querystring.unescape(req.params[0]); // если УРЛ для обработчика задан регуляркой, то в req.params попадает каждая скобочная группа из регулярки
+    const fileNameOnly=querystring.unescape(req.params[1]);
+    const fileExtName=querystring.unescape(req.params[2]); // тут не может быть никаких особых символов, но лучше всегда unescape-ить всё что взято напрямую из УРЛа
     logLineAsync(logFN,`[${port}] пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
-
-    // УРЛы вообще-то urlencode-нные, и если они содержат пробелы, русские буквы и прочие особенности,
-    // то не будет полного соответствия между именем файла в req.params/req.originalUrl и именем файла в операционной системе
-    // но у нас тут webserver.get жёсткая регулярка, она не пропустит таких символов
 
     const thumbPFN=path.resolve(__dirname,"images_thumb",fullFileName);
 
