@@ -84,6 +84,43 @@ ip-адрес: <b>178.172.195.18</b><br/>
             
 </table>
 
+<br/>
+<h2>nginx</h2>
+
+<table class=STable>
+
+        <tr>
+            <td class=SCommand>
+                nano /etc/nginx/nginx.conf
+            </td>
+            <td>
+                открыть редактор nano для изменения файла конфигурации nginx;<br/>
+                выход из редактора &mdash; Ctrl+X
+            </td>
+        </tr>
+            
+    <tr>
+        <td class=SCommand>
+            sudo nginx -t
+        </td>
+        <td>
+            проверить конфигурацию<br/>
+            (будет запрошен пароль Linux-пользователя user)
+        </td>
+    </tr>
+
+    <tr>
+            <td class=SCommand>
+                sudo nginx -s reload
+            </td>
+            <td>
+                перезагрузить конфигурацию<br/>
+                (будет запрошен пароль Linux-пользователя user)
+            </td>
+        </tr>
+        
+</table>
+
 <style>
     .STable { border-collapse: collapse }
     .STable td { vertical-align: top; border: solid gray 1px; padding: 5px }
