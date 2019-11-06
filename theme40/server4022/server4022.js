@@ -10,9 +10,14 @@ const port = 4022;
 const logFN = path.join(__dirname, '_server.log');
 
 webserver.get("/mysite/*", (req, res) => { 
-    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl);
 
-    const filePath=path.resolve(__dirname,"../site_football",req.originalUrl.substring(8));
+    // мы будем часть УРЛа использовать как путь+имя файла
+    // но в УРЛе пробелы, русские буквы и другие символы кодируются через urlencode (из " " получается "%20", из "п" - "%D0%BF")
+    const originalUrlDecoded=urldecode(req.originalUrl);
+
+    logLineSync(logFN,`[${port}] `+"static server called, originalUrl="+req.originalUrl+", originalUrlDecoded="+originalUrlDecoded);
+
+    const filePath=path.resolve(__dirname,"../site_football",req.originalUrlDecoded.substring(8));
 
     try {
         const stats=fs.statSync(filePath);

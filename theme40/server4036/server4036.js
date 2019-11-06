@@ -26,6 +26,10 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
     const fileExtName=req.params[2];
     logLineAsync(logFN,`[${port}] пришёл запрос на автоуменьшенную картинку, полное имя файла = ${fullFileName}, имя исходного файла = ${fileNameOnly}, расширение исходного файла = ${fileExtName}`);
 
+    // УРЛы вообще-то urlencode-нные, и если они содержат пробелы, русские буквы и прочие особенности,
+    // то не будет полного соответствия между именем файла в req.params/req.originalUrl и именем файла в операционной системе
+    // но у нас тут webserver.get жёсткая регулярка, она не пропустит таких символов
+
     const thumbPFN=path.resolve(__dirname,"images_thumb",fullFileName);
 
     // сначала проверим, может маленькая картинка уже готовая лежит в папке images_thumb
