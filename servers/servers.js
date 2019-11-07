@@ -50,6 +50,8 @@ require("../theme65/server6550/server6550");
 require("../theme70/server7020/server7020");
 require("../theme70/server7030/server7030");
 
+require("../theme75/server7581/server7581");
+
 require('ignore-styles'); // игнорировать CSS-файлы, если где-то будут импортироваться
 require('@babel/register')({ 
   ignore: [ /(node_modules)/ ], // не транспилировать всё что в node_modules (как правило там всё уже оттранспилированное)
