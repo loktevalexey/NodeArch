@@ -1,0 +1,22 @@
+<input type=button value='скачать №1' onclick="download('https://lenta.ru/manifest.json')"><br>
+<input type=button value='скачать №2' onclick="download('http://nodearch.e-learning.by:7640/manifest.json')"><br>
+
+<script>
+
+async function download(url) {
+    const fetchOptions={
+        headers: {
+            'Accept': 'application/json',
+        },
+    };
+    const response=await fetch(url,fetchOptions);
+    if ( response.ok ) {
+        const data=await response.json();
+        console.log("данные успешно прочитаны");
+        console.log(data);
+    }
+    else
+        console.error("ошибка чтения данных");
+}
+
+</script>
