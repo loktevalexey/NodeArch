@@ -6,3 +6,5 @@
 **/_server.log
 **/uploads
 _nodemon.log
+nginx_caches/
+
