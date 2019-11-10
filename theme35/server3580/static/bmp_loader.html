@@ -1,0 +1,29 @@
+<input type=button value="загрузить картинку в формате bmp" onclick="loadBMP()">
+
+<script>
+
+async function loadBMP() {
+    try {
+        let response=await fetch('girl.bmp');
+        if ( response.ok ) {
+            let ab=await response.arrayBuffer();
+            console.log("загружены двоичные данные:");
+            console.log(ab);
+            // мы ничего не можем сделать с ArrayBuffer напрямую, мы должны наложить какое-либо view
+            // например, наложим Int8Array, т.е. будем трактовать этот ArrayBuffer как последовательность байтов
+            let ta8=new Int8Array(ab);
+            console.log(ta8[0],ta8[1]);
+            // наложим на этот же буфер Int16Array, т.е. будем трактовать его как последовательность двухбайтовых чисел
+            let ta16=new Int16Array(ab);
+            console.log(ta16[0],ta16[1]);
+        }
+        else {
+            console.error('error loading bitmap');
+        }
+    }
+    catch ( err ) {
+        console.error(err);
+    }
+}
+
+</script>
