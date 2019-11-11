@@ -8,8 +8,10 @@ async function loadBMP() {
         if ( response.ok ) {
             let ab=await response.arrayBuffer();
             var dv=new DataView(ab); // накладываем представление, позволяющее из любой заданной позиции читать заданный тип данных
-            // начиная с 18-го байта лежит 4-байтовая ширина картинки в пикселях, и она именно в little endian-формате, это прописано в формате bmp
+            // начиная с 18-го байта лежит 4-байтовая ширина картинки в пикселях
+            // и она именно в little endian-формате, это прописано в документации на формат bmp
             let imageWidth=dv.getUint32(18,true); 
+            // true - значит хотим из ArrayBuffer прочитать именно little endian-целое; при ЛЮБЫХ других значениях прочтётся big endian-целое
              // а сразу после неё - 4-байтовая высота картинки в пикселях
             let imageHeight=dv.getUint32(22,true);
             console.log(`width=${imageWidth} height=${imageHeight}`);
