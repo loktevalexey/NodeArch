@@ -9,7 +9,7 @@ async function loadBMP() {
             let ab=await response.arrayBuffer();
             console.log("загружены двоичные данные:");
             console.log(ab);
-            // мы ничего не можем сделать с ArrayBuffer напрямую (кроме как вызвать метод toString, мы должны наложить какое-либо view
+            // мы ничего не можем сделать с ArrayBuffer напрямую (кроме как вызвать метод toString), мы должны наложить какое-либо view
             // например, наложим Int8Array, т.е. будем трактовать этот ArrayBuffer как последовательность байтов
             let ta8=new Int8Array(ab);
             console.log(ta8[0],ta8[1]);
