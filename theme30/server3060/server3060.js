@@ -20,5 +20,6 @@ webserver.post('/service6', (req, res) => {
     res.send("service6 ok, login="+req.body.login+" age="+req.body.age);
 });
 
-webserver.listen(port);
-console.log("web server running on port "+port);
+webserver.listen(port,()=>{
+    console.log("web server running on port "+port);
+});

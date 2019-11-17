@@ -18,5 +18,6 @@ webserver.get('*', function(req, res){
   res.status(404).send('<b>ИЗВИНИТЕ!</b> такого файлика - '+req.path+' - у нас нет!');
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+  logLineSync(logFN,"web server running on port "+port);
+});

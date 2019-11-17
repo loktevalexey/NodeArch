@@ -43,5 +43,6 @@ webserver.get('/service4', (req, res) => {
     res.send("hello <b>goodbye</b>");
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+});

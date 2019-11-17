@@ -48,8 +48,9 @@ webserver.post('/service1', (req, res) => {
     res.send("");
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+});
 
 function anyBodyParser(req, res, next) {
     const contentType=req.headers['content-type'];

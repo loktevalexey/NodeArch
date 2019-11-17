@@ -63,8 +63,9 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
 
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});
 
 // масштабирует картинку из sourcePFN в resultPFN с указанной шириной с сохранением пропорций
 async function compressImage(sourcePFN, resultPFN, newWidth) {

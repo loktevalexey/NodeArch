@@ -22,5 +22,6 @@ webserver.get('/service4', (req, res) => {
     res.send("service4 par1="+req.query.par1+" par2="+req.query.par2);
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+});

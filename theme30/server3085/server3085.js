@@ -40,10 +40,11 @@ webserver.get('/service2', (req, res) => {
     }
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
-logLineSync(logFN,`[${port}] `+"environment variable NODE_ENV is "+process.env.NODE_ENV);
-logLineSync(logFN,`[${port}] `+"environment variable VAR1 is "+process.env.VAR1);
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+    logLineSync(logFN,`[${port}] `+"environment variable NODE_ENV is "+process.env.NODE_ENV);
+    logLineSync(logFN,`[${port}] `+"environment variable VAR1 is "+process.env.VAR1);
+});
 
 function escapeHTML(text) {
     if ( !text )

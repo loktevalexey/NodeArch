@@ -30,5 +30,6 @@ webserver.post('/register', (req, res) => {
     res.send("вы зарегистрированы, поздравляем!<br><br>"+resultTable);
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

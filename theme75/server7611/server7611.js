@@ -20,5 +20,6 @@ webserver.get('/getsportpage/:sportname', async function (req, res) {
     res.send(fileContents.split("$$$SPORT$$$").join(req.params.sportname));
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

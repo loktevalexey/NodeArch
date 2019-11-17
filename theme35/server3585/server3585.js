@@ -41,5 +41,6 @@ webserver.post('/service3', cors(CORSOptions), (req, res) => {  // включа�
     res.send("service3 ok");
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+});

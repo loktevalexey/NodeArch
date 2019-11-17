@@ -39,5 +39,6 @@ webserver.get("/mysite/*", (req, res) => {
 
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+});

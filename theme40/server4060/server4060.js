@@ -19,5 +19,6 @@ webserver.use(
     express.static(path.resolve(__dirname,"../site_football"))
 );
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

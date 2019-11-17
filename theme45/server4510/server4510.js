@@ -24,5 +24,6 @@ webserver.get('/service2/:aaa', async (req, res) => {
     res.send(proxy_text);
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

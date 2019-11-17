@@ -14,5 +14,6 @@ webserver.get('/getdataasync', (req, res) => {
     res.sendFile( path.resolve(__dirname,"../site_football/stats.json") );
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

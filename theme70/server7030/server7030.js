@@ -19,5 +19,6 @@ webserver.get('*', function(req, res){
     res.sendFile( path.join(__dirname,"static","index.html") );
 });
   
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

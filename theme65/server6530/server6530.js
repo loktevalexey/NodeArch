@@ -115,5 +115,6 @@ webserver.use(
     express.static(path.resolve(__dirname,"static"))
 );
 
-webserver.listen(port);
-logLine(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLine(logFN,"web server running on port "+port);
+});

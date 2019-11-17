@@ -55,6 +55,6 @@ webserver.post('/service4', service4files, (req, res) => {
     res.send("ok login="+req.body.login);
 });
 
-webserver.listen(port);
-logLineSync(logFN,"web server running on port "+port);
-
+webserver.listen(port,()=>{
+    logLineSync(logFN,"web server running on port "+port);
+});

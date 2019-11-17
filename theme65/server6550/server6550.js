@@ -39,5 +39,6 @@ webserver.get('/page2.html', function (req, res, next) {
     res.send('эту страницу ВЫ смотрели ' + req.session.views[req.originalUrl] + ' раз');
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

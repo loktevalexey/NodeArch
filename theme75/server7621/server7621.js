@@ -18,5 +18,6 @@ webserver.get('/slowpage', async function (req, res) {
     res.send(`<h3>содержимое страницы медленно, но сформировано!</h3>`);
 });
 
-webserver.listen(port);
-logLineAsync(logFN,"web server running on port "+port);
+webserver.listen(port,()=>{
+    logLineAsync(logFN,"web server running on port "+port);
+});

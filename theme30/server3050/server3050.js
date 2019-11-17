@@ -45,5 +45,7 @@ webserver.get('/service5', (req, res) => {
     console.log(`service5 called`);
 });
 
-webserver.listen(port); // просим веб-сервер слушать входящие HTTP-запросы на этом порту
-console.log("web server running on port "+port);
+// просим веб-сервер слушать входящие HTTP-запросы на этом порту
+webserver.listen(port,()=>{ 
+    console.log("web server running on port "+port);
+}); 
