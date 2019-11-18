@@ -66,7 +66,15 @@ async function compressImage(sourcePFN, resultPFN, newWidth) {
 
     let newHeight = height/width*newWidth; // ширину маленькой картинки знаем, вычисляем высоту маленькой
 
+    let resultTempPFN=resultPFN+".tmp";
+
     result.resize(newWidth, newHeight);
     result.quality(100);
-    await result.writeAsync(resultPFN);
+    await result.writeAsync(resultTempPFN);
+
+    // при любом способе записи файла он некоторое время виден в файловой системе с длиной 0
+    // а у нас в соседнем запросе определяется, нет ли уже сохранённого файла с нужным именем
+    // поэтому, ВСЕГДА сначала медленно пишем в файл со временным именем, а потом переименовываем файл в нужное имя (это моментально)
+    await fsp.rename(resultTempPFN,resultPFN);
+
 }
