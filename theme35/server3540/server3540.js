@@ -6,8 +6,8 @@ const { logLineSync } = require('../../utils/utils');
 
 const webserver = express();
 
-webserver.use(express.json());
-webserver.use(bodyParser.text());
+webserver.use(express.json()); // мидлварь, умеющая обрабатывать тело запроса в формате JSON
+webserver.use(bodyParser.text()); // мидлварь, умеющая обрабатывать тело запроса в текстовом формате (есть и bodyParser.json())
 webserver.use(anyBodyParser);  // это самописная мидлварь, которая тело запроса в виде строки помещает в req.rawBody
 
 const port = 3540;

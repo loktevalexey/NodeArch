@@ -43,14 +43,25 @@ webserver.get(/^\/image\/(([a-zA-Z\d]+)_thumb\.(jpg|jpeg|gif|png))$/, async (req
         logLineAsync(logFN,`[${port}] нет готовой маленькой картинки ${fullFileName}, будем сжимать большую и сохранять результат на будущее`);
 
         if ( !(fullFileName in compressPromisesCache) ) {
-            const originPFN=path.resolve(__dirname,"images_full",`${fileNameOnly}.${fileExtName}`);
-            let compressStartDT=new Date();
-            const compressPromise=compressImage(originPFN,thumbPFN,300);
-            compressPromisesCache[fullFileName]=compressPromise; // запоминаем в кэше промисов - процесс сжатия сейчас идёт
-            await compressPromise;
-            delete compressPromisesCache[fullFileName]; // удаляем из кэша промисов - процесс закончился
-            let compressDurationMS=(new Date())-compressStartDT;
-            logLineAsync(logFN,`[${port}] сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
+            try {
+                const originPFN=path.resolve(__dirname,"images_full",`${fileNameOnly}.${fileExtName}`);
+                let compressStartDT=new Date();
+                const compressPromise=compressImage(originPFN,thumbPFN,300);
+                compressPromisesCache[fullFileName]=compressPromise; // запоминаем в кэше промисов - процесс сжатия сейчас идёт
+                await compressPromise;
+                delete compressPromisesCache[fullFileName]; // удаляем из кэша промисов - процесс закончился
+                let compressDurationMS=(new Date())-compressStartDT;
+                logLineAsync(logFN,`[${port}] сохранена маленькая картинка ${fullFileName}, сжатие заняло ${compressDurationMS} мс`);
+            }
+            catch ( err ) {
+                // в любой момент при работе с файлами может произойти исключение, тем более когда мы дёргаем пакет jimp
+                // 1. надо УДАЛИТЬ ПРОМИС из кэша промисов, иначе он возможно останется в кэше и ветка ниже будет ВСЕГДА переиспользовать отменённый промис
+                // 2. надо вывести ошибку в лог
+                // 3. надо вернуть клиенту 500
+                delete compressPromisesCache[fullFileName];
+                logLineAsync(logFN,`[${port}] ошибка при сжатии картинки ${fullFileName} - `+err);
+                res.status(500).end();
+            }
         }
         else {
             logLineAsync(logFN,`[${port}] в кэше промисов сейчас есть процесс сжатия картинки ${fullFileName}, не будем запускать параллельно второй, будем ждать того же промиса`);
