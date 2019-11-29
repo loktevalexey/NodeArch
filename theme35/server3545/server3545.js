@@ -63,10 +63,11 @@ function anyBodyParser(req, res, next) {
         });
         req.on('end', function() {
             req.rawBody = data;
-            res.locals.anybodycomment='xml->rawBody done, '+data.length+' bytes'; // оставляем некие данные для следующих обработчиков в цепочке
-            next();  // rawBody заполнено, вызываем следующую мидлварь в цепочке мидлварей
+            // оставляем некие данные прикладного назначения для следующих обработчиков в цепочке
+            res.locals.anybodycomment='xml->rawBody done, '+data.length+' bytes'; 
+            next();
         });
     }
     else
-        next(); // раз это не запрос в формате XML, сразу вызываем следующую мидлварь
+        next();
 }
