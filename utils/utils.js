@@ -1,5 +1,6 @@
 const fs = require('fs');
 const os = require('os');
+const path = require('path');
 
 // пишет строку в файл лога и одновременно в консоль
 
@@ -49,6 +50,12 @@ function logLineAsync(logFilePath,logLine) {
 
 }
 
+// дописывает заданный постфикс к имени (не расширению) файла
+function getTempFileName(targetPFN,postfix="_tmp") {
+    const targetPathParts=path.parse(targetPFN);
+    return targetPathParts.dir+path.sep+targetPathParts.name+"_tmp"+targetPathParts.ext;
+}
+
 let dividerRES="[ \n\r]";
 let tagNameRES="[a-zA-Z0-9]+";
 let attrNameRES="[a-zA-Z]+";
@@ -72,5 +79,6 @@ function removeTags(str,replaceStr="") {
 module.exports={
     logLineSync,
     logLineAsync,
+    getTempFileName,
     removeTags,
 };

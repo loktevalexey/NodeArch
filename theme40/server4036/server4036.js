@@ -4,7 +4,7 @@ const fsp = require('fs').promises; // используем эксперимен
 const querystring = require('querystring');
 const Jimp = require('jimp');
 
-const { logLineAsync } = require('../../utils/utils');
+const { logLineAsync, getTempFileName } = require('../../utils/utils');
 
 const webserver = express();
 
@@ -66,7 +66,7 @@ async function compressImage(sourcePFN, resultPFN, newWidth) {
 
     let newHeight = height/width*newWidth; // ширину маленькой картинки знаем, вычисляем высоту маленькой
 
-    let resultTempPFN=resultPFN+".tmp";
+    let resultTempPFN=getTempFileName(resultPFN);
 
     result.resize(newWidth, newHeight);
     result.quality(100);
