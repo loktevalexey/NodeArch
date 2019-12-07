@@ -53,7 +53,7 @@ function logLineAsync(logFilePath,logLine) {
 // дописывает заданный постфикс к имени (не расширению) файла
 function getTempFileName(targetPFN,postfix="_tmp") {
     const targetPathParts=path.parse(targetPFN);
-    return targetPathParts.dir+path.sep+targetPathParts.name+"_tmp"+targetPathParts.ext;
+    return targetPathParts.dir+path.sep+targetPathParts.name+postfix+targetPathParts.ext;
 }
 
 let dividerRES="[ \n\r]";
