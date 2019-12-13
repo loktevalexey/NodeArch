@@ -6,13 +6,13 @@ function loadData(callback) {
             const result=25;
             console.log("loadData загрузила данные - "+result);
             cachedResult=result; // запоминаем результат, полученный с такими сложностями
-            callback(result);
+            callback(result); // коллбек всегда вызывается асинхронно
         },500); 
     }
     else {
         // данные уже были получены
         console.log("loadData имеет закэшированные данные - "+cachedResult);
-        setImmediate(()=>callback(cachedResult));
+        setImmediate(()=>callback(cachedResult));  // коллбек всегда вызывается асинхронно
     }
 }
 
