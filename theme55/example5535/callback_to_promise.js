@@ -4,6 +4,8 @@ function longMultiply(a,b,callback) {
     } ,1000);
 }
 
+// универсальный промисификатор для Node.js-функций, работающих с коллбеками -
+// трактует последний аргумент промисифицируемой функции как коллбек, получающий первым аргументом ошибку, а остальными - полезные данные
 function promisificator(f) {
     return function(...args) {
         return new Promise( (resolve,reject)=>{
