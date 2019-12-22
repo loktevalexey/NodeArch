@@ -20,6 +20,11 @@ const req = http.request(options, (res) => {
 
     res.pipe(writeStream);
     
+    res.on('data', chunk => {
+        // то что мы вызвали pipe (а это под капотом в т.ч. подписка на data), не мешает нам ещё раз подписаться на data
+        console.log(chunk.length+' downloaded...');  
+    });
+  
     writeStream.on('close', ()=>{
         console.log("file has downloaded and writed");
     });
