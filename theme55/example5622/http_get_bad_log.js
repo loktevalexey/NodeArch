@@ -20,19 +20,24 @@ const options = {
 
 const req = http.request(options, (res) => {
 
-    console.log(`finished. StatusCode: ${res.statusCode}`);
+    console.log(`statusCode: ${res.statusCode}`);
+
+    let chunkNum=0;
 
     res.on('data', chunk => {
       
+      let cn=++chunkNum;
+      console.log(`chunk #${cn} - data event`); 
+
       fs.appendFile(resultFile, chunk, (err) => { // каждый загружаемый кусочек данных дописываем к файлу download.gif
           if (err) throw err;
-          console.log(chunk.length+' downloaded...');
+          console.log(`chunk #${cn} - appendFile finished`); 
       });
 
     });
 
     res.on('end', () => {
-        console.log('file ready.');
+        console.log('all chunks downloaded.');
     })
     
 });

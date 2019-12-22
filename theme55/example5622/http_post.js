@@ -21,7 +21,7 @@ let result='';
 
 const req = http.request(options, (res) => {
 
-    console.log(`finished. StatusCode: ${res.statusCode}`);
+    console.log(`statusCode: ${res.statusCode}`);
 
     res.on('data', chunk => { // всегда ожидаем что данные приходят кусочками, даже если точно знаем что данных совсем немного!
         result+=chunk; // chunk - это Buffer, но при склейке со строкой он автоматом преобразуется к строке
