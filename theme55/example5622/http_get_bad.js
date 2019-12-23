@@ -4,6 +4,8 @@ const path = require('path');
 
 const resultFile = path.join(__dirname,'download.gif');
 
+// будем загружать http://fe.it-academy.by/Examples/Animated-Flag-Altai-Krai.gif
+
 fs.unlink(resultFile, (err) => {
     if ( err ) {
         if ( err.code!=="ENOENT" ) // если ошибка "а файла и не было" - игнорируем ошибку
