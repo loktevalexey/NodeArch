@@ -32,7 +32,7 @@ const req = http.request(options, (res) => {
             if ( err )
                 console.error(err);
             else
-                console.log("file has been wrote");
+                console.log("file has been written");
         });
         
     });

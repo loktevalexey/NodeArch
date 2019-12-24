@@ -30,7 +30,7 @@ const req = http.request(options, (res) => {
     });
     
     writeStream.on('close', ()=>{
-        console.log("file has been wrote");
+        console.log("file has been written");
     });
     
 });

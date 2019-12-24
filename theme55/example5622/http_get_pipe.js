@@ -26,7 +26,7 @@ const req = http.request(options, (res) => {
     });
   
     writeStream.on('close', ()=>{
-        console.log("resource has been downloaded and file has been wrote");
+        console.log("resource has been downloaded and file has been written");
     });
 
 });
