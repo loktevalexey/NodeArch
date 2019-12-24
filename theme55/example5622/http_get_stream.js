@@ -18,17 +18,21 @@ const req = http.request(options, (res) => {
     var writeStream=fs.createWriteStream( resultFile );
     // если файл уже есть, createWriteStream по умолчанию его перезаписывает (flags:'w'), поэтому удалять файл в начале и не пришлось
 
-    res.pipe(writeStream);
-    
     res.on('data', chunk => {
-        // то что мы вызвали pipe (а это под капотом в т.ч. подписка на data), не мешает нам ещё раз подписаться на data
         console.log(chunk.length+' downloaded...');  
+        // с потоками можно не бояться делать много операций подряд, они не "перепутаются"
+        writeStream.write(chunk);
     });
   
-    writeStream.on('close', ()=>{
-        console.log("resource has been downloaded and file has been wrote");
+    res.on('end',()=>{
+        console.log("resource has been downloaded");
+        writeStream.end();
     });
-
+    
+    writeStream.on('close', ()=>{
+        console.log("file has been wrote");
+    });
+    
 });
 
 req.on('error', (err) => {

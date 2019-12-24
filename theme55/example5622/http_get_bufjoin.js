@@ -24,7 +24,7 @@ const req = http.request(options, (res) => {
     });
 
     res.on('end', () => {
-        console.log('all chunks downloaded.');
+        console.log('all chunks have been downloaded.');
 
         // Buffer.concat делает новый буфер из массива буферов, это быстро
         // flag:'w' создаёт файл если его не было и перезаписыает если он был, поэтому удаление файла перед загрузкой вообще не потребовалось
@@ -32,7 +32,7 @@ const req = http.request(options, (res) => {
             if ( err )
                 console.error(err);
             else
-                console.log("file has writed");
+                console.log("file has been wrote");
         });
         
     });

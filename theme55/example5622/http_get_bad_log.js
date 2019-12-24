@@ -37,7 +37,7 @@ const req = http.request(options, (res) => {
     });
 
     res.on('end', () => {
-        console.log('all chunks downloaded.');
+        console.log('all chunks have been downloaded.');
     })
     
 });
