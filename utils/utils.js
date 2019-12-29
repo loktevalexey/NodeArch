@@ -56,6 +56,11 @@ function getTempFileName(targetPFN,postfix="_tmp") {
     return targetPathParts.dir+path.sep+targetPathParts.name+postfix+targetPathParts.ext;
 }
 
+// генерирует случайное имя файла (по-хорошему можно ещё проверить, а может такой уже существует, и перегенерить в этом случае)
+function getRandomFileName(targetPath) {
+  return path.resolve(targetPath,Math.random().toString(36).substring(2, 15));
+}
+
 let dividerRES="[ \n\r]";
 let tagNameRES="[a-zA-Z0-9]+";
 let attrNameRES="[a-zA-Z]+";
@@ -80,5 +85,6 @@ module.exports={
     logLineSync,
     logLineAsync,
     getTempFileName,
+    getRandomFileName,
     removeTags,
 };
