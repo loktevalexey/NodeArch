@@ -1,6 +1,7 @@
-﻿const express = require('express');
+﻿const path = require('path');
+const express = require('express');
 const multer = require('multer');
-const path = require('path');
+const progress = require('progress-stream');
 
 const { logLineSync } = require('../../utils/utils');
 
@@ -53,6 +54,31 @@ webserver.post('/service4', service4files, (req, res) => {
     console.log("request files",req.files); // req.files заполнила миддлварь upload.fields
     
     res.send("ok login="+req.body.login);
+});
+
+// multer не позволяет отслеживать прогресс приёма+сохранения файла
+// есть пакет progress-stream, он по сути прозрачно становится между req и multer, 
+// но предоставляет событие progress, позволяющее отследить прогресс передачи данных от req к multer
+// важно: progress-stream будет отслеживать процесс передачи ВСЕГО тела запроса, а не именно файла
+// а в теле запроса, кроме photo, у нас ещё login и password
+const service5file = upload.single('photo');
+webserver.post('/service5', (req, res) => { 
+    var fileProgress = progress();
+    const fileLength = req.headers['content-length']; // вообще-то длина тела запроса не равна длине файла, но примерно - да
+
+    req.pipe(fileProgress); // поток с телом запроса направляем в progress
+    fileProgress.headers = req.headers; // и ставим в progress те же заголовки что были у req
+
+    fileProgress.on('progress', info => {
+        console.log('loaded '+info.transferred+' bytes of '+fileLength);
+    });
+
+    service5file(fileProgress, res, async (err) => {
+        if (err) return res.status(500);
+        console.log('file saved, origin filename='+fileProgress.file.originalname+', store filename='+fileProgress.file.filename);
+        res.send("ok login="+fileProgress.body.login);
+    });
+
 });
 
 webserver.listen(port,()=>{
