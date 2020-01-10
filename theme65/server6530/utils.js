@@ -68,9 +68,56 @@ function reportRequestError(error,res,logFN) {
         logLine(logFN,error);
 }
 
+// используется для преобразования массива хэшей в хэш хэшей, ключом будет указанное свойство
+// например, массив:
+// [ { id:5, name:'aaa' }, { id:7, name:'bbb' } ]
+// преобразуется в:
+// { 5:{ id:5, name:'aaa' }, 7:{ id:7, name:'bbb' } }
+function arrayToHash(arr,keyField) {
+    let hash={};
+    for ( let i=0; i<arr.length; i++ ) {
+        let row=arr[i];
+        let key=row[keyField];
+        hash[key]=row;
+    }
+    return hash;
+}
+
+function processText(text,appData) {
+
+    // в appData.options ожидается хэш с опциями
+
+    // макрос {OS|code} используется для подстановки значения строковой настройки с кодом code
+    // макрос {OI|code} используется для подстановки значения целочисленной настройки с кодом code
+    // макрос {OF|code} используется для подстановки значения дробной настройки с кодом code
+    // макрос {OT|code} используется для подстановки значения длиннотекстовой настройки с кодом code
+
+    text=text.replace(/\{O([SIFT])\|([a-zA-Z0-9_-]+)\}/g,(hitStr, typeLetter,optionCode, hitIndex,allStr) => {
+        const option=appData.options[optionCode];
+        if ( !option ) {
+            console.error('processText: option '+optionCode+' not found');
+            return hitStr;
+        }
+        switch ( typeLetter ) {
+            case 'S':
+                return processText(option.str_value,appData); // почему бы и не разрешить в значении строковой опции тоже использовать макросы?
+            case 'I':
+                return option.int_value+''; // возможно нужно добавить форматирование
+            case 'F':
+                return option.float_value; // возможно нужно добавить форматирование, например запятую вместо точки
+            case 'T':
+                return processText(option.text_value,appData);
+        }
+    });
+
+    return text;
+}
+
 module.exports={
     logLine,
     reportServerError,
     reportRequestError,
     removeTags,
+    arrayToHash,
+    processText,
 };

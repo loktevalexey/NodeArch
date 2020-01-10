@@ -2,7 +2,7 @@
 const path = require('path');
 const mysql = require("mysql");
 
-const { logLine, reportServerError, reportRequestError } = require('./utils');
+const { logLine, reportServerError, reportRequestError, arrayToHash } = require('./utils');
 const { newConnectionFactory, selectQueryFactory } = require("./utils_db");
 const { composeMaket_New, composeMaket_IndPage } = require("./makets");
 
@@ -46,6 +46,11 @@ webserver.get('/new/:urlcode', async (req, res) => {
             res.status(404).send("Извините, такой новости у нас нет!");
         }
         else {
+
+            // некоторым блокам потребуется содержимое таблицы настроек
+            let optionsArr=await selectQueryFactory(connection, `select * from options;`, []);
+            let options=arrayToHash(optionsArr,'code');
+
             // все новости рендерим по "макету одной новости", но можно для разных новостей использовать разные макеты
             let html=await composeMaket_New( // вызываем построение макета одной новости
                 { // служебные параметры
@@ -54,6 +59,7 @@ webserver.get('/new/:urlcode', async (req, res) => {
                 },
                 { // данные приложения
                     newInfo:news[0], // информация о новости из УРЛа - мы полагаем, что в макете будет блок "новость из УРЛа" и ему нужна эта информация
+                    options, // настройки сайта
                 }
             );
             res.send(html);
@@ -91,11 +97,17 @@ webserver.get('/:urlcode', async (req, res) => {
             res.status(404).send("Извините, такой страницы у нас нет!");
         }
         else {
+
+            // некоторым блокам потребуется содержимое таблицы настроек
+            let optionsArr=await selectQueryFactory(connection, `select * from options;`, []);
+            let options=arrayToHash(optionsArr,'code');
+
             // все новости рендерим по "макету индивидуальной страницы", но можно для разных индивидуальных страниц использовать разные макеты
             let html=await composeMaket_IndPage( // вызываем построение макета индивидуальной страницы
                 { connection, logFN },
                 { // данные приложения
-                    indPageInfo:indPages[0],
+                    indPageInfo:indPages[0], // информация о индивидуальной странице
+                    options, // настройки сайта
                 }
             );
             res.send(html);

@@ -14,7 +14,7 @@ async function composeMaket_New(coreData,appData) {
         html+=`<meta name="keywords" content="${appData.newInfo.metakeywords}"/>\n`;
     if ( appData.newInfo.metadescription )
         html+=`<meta name="description" content="${appData.newInfo.metadescription}"/>\n`;
-    html+=`<title>Новость - ${appData.newInfo.header}</title>\n`;
+    html+=`<title>Новость - ${appData.newInfo.header} - ${appData.options.SITENAME.str_value}</title>\n`;
     html+=`</head>\n`;
 
     // скомпонуем HTML-код для каждой визуальной части сайта, построив соответствующий контент
@@ -47,7 +47,7 @@ async function composeMaket_IndPage(coreData,appData) {
         html+=`<meta name="keywords" content="${appData.indPageInfo.metakeywords}"/>\n`;
     if ( appData.indPageInfo.metadescription )
         html+=`<meta name="description" content="${appData.indPageInfo.metadescription}"/>\n`;
-    html+=`<title>${appData.indPageInfo.title}</title>\n`;
+    html+=`<title>${appData.indPageInfo.title} - ${appData.options.SITENAME.str_value}</title>\n`;
     html+=`</head>\n`;
 
     // скомпонуем HTML-код для каждой визуальной части сайта, построив соответствующий контент

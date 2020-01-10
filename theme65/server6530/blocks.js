@@ -1,3 +1,4 @@
+const { processText } = require('./utils');
 const { selectQueryRowFactory, selectQueryFactory } = require("./utils_db");
 const { composeContent } = require("./contents");
 
@@ -11,7 +12,9 @@ async function composeBlock_Header(coreData,appData,blockAttributes) {
 }
 
 async function composeBlock_FormattedText(coreData,appData,blockAttributes) {
-    return `<div>${blockAttributes.text}</div>`;
+    let text=blockAttributes.text;
+    text=processText(text,appData);
+    return `<div>${text}</div>`;
 }
 
 async function composeBlock_Search(coreData,appData,blockAttributes) {
