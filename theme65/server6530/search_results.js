@@ -4,6 +4,7 @@
 const mysql = require("mysql");
 
 const { newConnectionFactory, selectQueryFactory } = require("./utils_db");
+const { arrayToHash } = require("./utils");
 
 const wordRE=/[а-яА-ЯёЁa-zA-Z]{4,}/g; // регулярка для поиска того, что мы будем считать отдельным словом
 
@@ -82,9 +83,10 @@ const wordRE=/[а-яА-ЯёЁa-zA-Z]{4,}/g; // регулярка для пои�
         let spHitsRow=spHits[index_url];
         results.push( { index_url, relev:(spHitsRow.sp_uniq_hits*10+spHitsRow.sp_hits*1) } );
     }
+
+    // сортируем результаты по релевантности
     results.sort( (r1,r2) => r2.relev-r1.relev );
 
-    // перечень УРЛов, отсортированный по релевантности, готов
     // теперь сформируем данные для компоновки страницы с результатами поиска
     // ей, кроме собственно перечня УРЛов, нужны ещё названия страниц
     // и group_code+group_params, чтобы можно было результаты поиска по-разному представить (новости одним способом, инд. страницы другим)
@@ -94,8 +96,7 @@ const wordRE=/[а-яА-ЯёЁa-zA-Z]{4,}/g; // регулярка для пои�
     // лучше зачитаем сразу всю таблицу index_urls (только нужные поля) и возьмём из неё то что нам нужно, так быстрее
     let indexUrls=await selectQueryFactory(connection, `select id, title, group_code, group_params from index_urls;`);
     // преобразуем в хэш, ключ - id УРЛа, значение - прочитанная строка из indexUrls
-    let indexUrlsIndex={};
-    indexUrls.forEach( urlRow => { indexUrlsIndex[urlRow.id]=urlRow; } );
+    let indexUrlsIndex=arrayToHash(indexUrls,'id');
 
     results.forEach( result => {
         result.title=indexUrlsIndex[result.index_url].title;
