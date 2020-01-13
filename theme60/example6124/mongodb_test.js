@@ -21,6 +21,7 @@ MongoClient.connect(serverURL, { useNewUrlParser: true, useUnifiedTopology: true
             else {
                 console.log("insert done", result);
 
+                // получаем полный список студентов, {} - пустое условие фильтрации
                 studentsCollection.find({}).toArray(function(err, docs) {
                     if ( err )
                         console.error(err);
