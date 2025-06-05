@@ -20,7 +20,7 @@
     "extract-text-webpack-plugin": "^3.0.2",
     "lite-server": "^2.6.1",
     "webpack": "^5.94.0",
-    "webpack-dev-server": "^5.0.4"
+    "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
     "prop-types": "^15.8.1",
